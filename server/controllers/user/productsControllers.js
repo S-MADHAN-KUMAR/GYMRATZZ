@@ -32,9 +32,44 @@ export const get_related_products = async (req, res) => {
 
 export const new_arrivals = async (req, res) => {
   try {
-    const products = await ProductModel.find({ status: true }).sort({
-      createdAt: -1,
-    });
+    const currentDate = new Date(); 
+
+    const products = await ProductModel.aggregate([
+      {
+        $match: { status: true },
+      },
+      {
+        $lookup: {
+          from: "productoffers",
+          let: { productId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$productId", "$$productId"] },
+                    { $eq: ["$status", true] },
+                    { $lte: ["$startDate", currentDate] },
+                    { $gte: ["$endDate", currentDate] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "productDetails",
+        },
+      },
+      {
+        $sort: { createdAt: -1 },  // Sort products by createdAt in descending order
+      },
+      {
+        $unwind: {
+          path: "$productDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ]);
+    
 
     res.status(200).json(products);
   } catch (error) {

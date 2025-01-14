@@ -18,3 +18,21 @@ export const fetchBrands = async (setBrands) => {
     }
   }
 
+export const fetchCategories = async (setCategories) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/get_all_categories`);
+      setCategories(response?.data)
+    } catch (error) {
+      console.error("Error fetching banners:", error);
+    }
+  }
+
+export const fetchNewArrivals = async (setNewArrivals) => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/new_arrivals`);
+      setNewArrivals(response?.data)
+    } catch (error) {
+      console.error("Error fetching banners:", error);
+    }
+  }
+

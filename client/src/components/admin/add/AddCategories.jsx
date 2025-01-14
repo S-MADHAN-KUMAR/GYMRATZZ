@@ -1,16 +1,36 @@
 import React from 'react'
 import { useFormik } from 'formik'
 import { commanValidation } from '../../../validations/admin/productValidations'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { showToast } from '../../../helpers/toast'
 
 const AddCategories = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       name: '',
       image: null, 
     },
     validationSchema: commanValidation,
-    onSubmit: (values) => {
-      console.log(values)
+    onSubmit: async (values) => {
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/admin/add_categories`,
+          values, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        if (res.status === 200) {
+          showToast('Category added successfully', 'light', 'success');
+          navigate('/dashboard/categories');
+        }
+      } catch (error) {
+        console.error("Error adding :", error.response.data.message); 
+        showToast(error.response.data.message, 'dark', 'error');
+      }
     },
   })
 
@@ -18,7 +38,7 @@ const AddCategories = () => {
     <div className='flex flex-col gap-6'>
       <div className="flex w-full justify-between items-center mb-14">
         <h1 className="text-gray-300">Add categories</h1>
-        <a href="/dashboard/coupons" className="button">
+        <a href="/dashboard/categories" className="button">
           <span>Back to categories</span>
         </a>
       </div>
@@ -55,6 +75,15 @@ const AddCategories = () => {
           />
           {formik.errors.image && formik.touched.image && (
             <p className="text-red-500">{formik.errors.image}</p>
+          )}
+           {!formik.errors.image && formik.touched.image && formik.values.image && (
+            <div className="my-4">
+              <img
+                src={URL.createObjectURL(formik.values.image)}
+                alt="Preview"
+                className="h-40 w-auto border border-gray-500 rounded-md"
+              />
+            </div>
           )}
         </div>
 

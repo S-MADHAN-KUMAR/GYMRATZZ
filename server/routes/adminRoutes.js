@@ -1,7 +1,7 @@
 import express from 'express';
 import {  add_product, toggleBlockProduct, delete_product, get_all_products, get_edit_product, update_product } from '../controllers/admin/productsControllers.js';
-import { get_all_categories, toggleBlockCategories } from '../controllers/admin/categoriesControllers.js';
-import { add_brands, get_all_brands } from '../controllers/admin/brandsControllers.js';
+import { add_categories, get_all_categories, toggleBlockCategories } from '../controllers/admin/categoriesControllers.js';
+import { add_brands, get_all_brands, toggleBlockBrands } from '../controllers/admin/brandsControllers.js';
 import { get_all_coupons } from '../controllers/admin/couponControllers.js';
 import { get_all_users, toggleBlock } from '../controllers/admin/usersControllers.js';
 import upload from '../middlewares/multer.js'
@@ -11,8 +11,6 @@ import { best_selling_brands, best_selling_categories, best_sellings_products, g
 import { add_banners, get_all_banners, toggleBlockBanners } from '../controllers/admin/bannerControllers.js';
 import { adminAuth } from '../middlewares/adminMiddleware.js';
 import { adminLogin } from '../controllers/admin/adminControllers.js';
-import { toggleBlockBrands } from '../controllers/user/brandControllers.js';
-
 
 const router = express.Router()
 
@@ -91,6 +89,8 @@ router.put('/toggleBlock',toggleBlock)
 //=================================[ Categories ]===============================//
 
 router.get('/get_all_categories', get_all_categories)
+
+router.post('/add_categories',upload.single('image'), add_categories);
 
 router.put('/toggleBlockCategories/:id',toggleBlockCategories)
 

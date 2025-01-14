@@ -2,6 +2,7 @@ import express from 'express'
 import { get_all_products, get_related_products, new_arrivals, products_details } from '../controllers/user/productsControllers.js'
 import { get_all_brands } from '../controllers/user/brandControllers.js'
 import { get_all_banners } from '../controllers/user/bannerControllers.js'
+import { get_all_categories } from '../controllers/user/categoriesControllers.js'
 
 const router = express.Router()
 
@@ -35,7 +36,10 @@ router.get('/get_all_brands',get_all_brands)
 
 router.get('/get_all_banners',get_all_banners)
 
-//=================================[ Wallet ]===============================//
+//=================================[ Categories ]===============================//
+
+router.get('/get_all_categories',get_all_categories)
+
 
 // router.post('/add_wallet_amount',userAuth,add_wallet_amount);
 

@@ -17,25 +17,29 @@ export const get_all_categories = async (req, res) => {
 
 export const add_categories = async (req, res) => {
     try {
-      console.log('Uploaded file:', req.file); 
-      const { name, status } = req.body;
+      const { name } = req.body;
       const image = req.file;
   
-      if (!name || !status || !image) {
+      if (!name || !image) {
         return res.status(400).json({ message: 'Please provide all the fields including image.' });
+      }
+
+      const existCategory = await CategoriesModel.findOne({name})
+
+      if (existCategory) {
+        return res.status(400).json({ message: 'Category name already exist!' });
       }
   
       const uploadImage = await imageUploadUtil(image.buffer); 
   
       const newCategory = new CategoriesModel({
         name,
-        status,
         imageUrl: uploadImage,  
       });
   
       await newCategory.save(); 
   
-      return res.status(201).json({
+      return res.status(200).json({
         message: 'Category added successfully!',
         category: newCategory
       });

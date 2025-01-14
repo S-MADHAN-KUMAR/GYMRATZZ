@@ -129,3 +129,29 @@ export const update_brands = async (req, res) => {
       });
     }
   }
+
+  export const toggleBlockBrands = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+  
+      const updatedBrand = await BrandModel.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true }
+      );
+  
+      if (!updatedBrand) {
+        return res.status(404).json({ message: "Brand not found." });
+      }
+  
+      res.status(200).json({
+        message: "Brand status updated successfully.",
+        updatedBrand,
+      });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: "Internal server error", error: error.message });
+    }
+    };
