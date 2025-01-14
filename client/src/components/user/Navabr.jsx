@@ -1,0 +1,86 @@
+import React,{ useState } from "react";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { Link } from 'react-router-dom';
+
+const Navabr = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+  return (
+   <div className="flex flex-col items-center justify-center sticky top-0 z-50">
+     <nav className='bg-white flex items-center w-full justify-around border p-2 border-gray-800  '>
+        {/* LOGO */}
+       <Link to={'/'}>
+       <div className="flex gap-x-1">
+            <img src="public/logo.png" className="w-8 md:w-12" />
+            <h2 className='h1 tracking-wider text-2xl md:text-5xl text-[#252126]'>GYM RATZ</h2>
+        </div>
+       </Link>
+         {/* Desktop Links */}
+         <div className=" hidden text-gray-900 px-4 py-1 h4  md:flex md:space-x-6  h1 tracking-wider text-2xl">
+            <a href="/shop" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              Shop
+            </a>
+            <a href="/about" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              About
+            </a>
+            <a href="#contact" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              Contact
+            </a>
+          </div>
+        {/* ICONS */}
+        <div className="flex gap-x-3">
+         <img
+        src="https://img.icons8.com/?size=100&id=5twNojKL5zU7&format=png&color=000000"
+        className="w-7 md:w-9 hover:scale-110 cursor-pointer "
+      />
+       <img
+        src="https://img.icons8.com/?size=100&id=pMGoyzVDvHJe&format=png&color=000000"
+        className="w-7 md:w-9 hover:scale-110 cursor-pointer"
+      />
+        </div>
+        {/* PROFILE */}
+        <div className="">
+            <div className="">
+          <img  className='w-8 md:w-12' src="https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000"/>
+            </div>
+        </div>
+
+        <GiHamburgerMenu onClick={()=>setIsMenuOpen((prev)=>!prev)} className='md:hidden text-gray-800 w-6 h-6' />
+         
+ 
+{
+    isMenuOpen &&
+    <>
+    {/* Desktop Links */}
+    <div
+  className={`fixed top-12 gap-y-4 flex flex-col w-full items-center md:hidden bg-gray-900 text-gray-50 px-4 py-3 md:space-x-6 h1 tracking-wider text-lg font-medium transition-all duration-800 ease-in-out ${
+    isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full"
+  }`}
+>
+            <a href="/shop" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              Shop
+            </a>
+            <a href="/about" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              About
+            </a>
+            <a href="#contact" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              Contact
+            </a>
+            <div className="flex gap-x-4">
+            <a href="login" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              Login
+            </a>
+            <p>/</p>
+            <a href="register" className="hover:text-red-500 transition-colors drop-shadow-sm">
+              Register
+            </a>
+            </div>
+          </div>
+    </>
+}
+</nav>
+   </div>
+    
+  )
+}
+
+export default Navabr

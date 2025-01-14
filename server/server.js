@@ -1,0 +1,41 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv'
+import adminRoutes from './routes/adminRoutes.js'
+import userRoutes from './routes/userRoutes.js'
+import connectDB from './config/mongoDB.js';
+import cloudinaryConfig from './config/cloudinary.js'
+import cookieParser from 'cookie-parser';
+
+dotenv.config()
+const app = express()
+const PORT = process.env.PORT
+app.use(express.json())
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }))
+const corsOptions = {
+  origin: '*', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  // allowedHeaders: ['Content-Type', 'Authorization'], 
+};
+app.use( cors(corsOptions));
+
+//======================config=========================//
+
+connectDB()
+cloudinaryConfig()
+
+//=======================Routes=========================//
+
+// Admin Routes
+app.use('/admin',adminRoutes)
+ 
+// User Routes
+app.use('/user',userRoutes)
+
+//========================================================//
+
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
