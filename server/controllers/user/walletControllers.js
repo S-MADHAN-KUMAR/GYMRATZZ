@@ -52,8 +52,8 @@ export const add_wallet_amount = async (req, res) => {
           },
         ],
         mode: 'payment',
-        success_url: 'http://localhost:5173/wallet_success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url: 'http://localhost:5175/wallet_cancel',
+        success_url: `${process.env.FRONTEND_URL}/wallet_success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.FRONTEND_URL}/wallet_cancel`,
         client_reference_id: userId, 
       });
   
