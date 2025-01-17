@@ -229,7 +229,7 @@ export const handle_google_auth = async (req, res) => {
         user.name = name || user.name;
         user.profilePicture = picture || user.profilePicture;
         await user.save();
-   
+      }
     const token = userGenerateToken(email);
 
      res.status(200).json({
