@@ -13,33 +13,33 @@ const Login = () => {
   const [IsOpenEmailPopup, setIsOpenEmailPopup] = useState(false);
   const dispatch = useDispatch();
    const navigate = useNavigate()
-  const formik = useFormik({
+   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
+      password: ''
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
       dispatch(LoginStart());
       try {
         const response = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/user/login`,
+          `http://localhost:3000/user/login`,
           values,
-          {
-            withCredentials: true, // Allow sending cookies with the request
-            headers: {
-              'Content-Type': 'application/json', // Set content type to JSON
-            },
-          }
-        ); // Make sure to close the axios.post parentheses here
-
+          { withCredentials: true } // Make sure to update this if you plan to use `localStorage` instead of cookies
+        );
+  
         if (response.status === 200) {
+          // Store token in localStorage
+          localStorage.setItem('USER_TOKEN', response?.data?.token);
+  
+          // Optionally store other user details in localStorage
+          localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
+  
+          // Update Redux state
           dispatch(LoginSuccess(response?.data?.user));
           showToast('Logged in successfully!', 'light', 'success');
-           navigate('/')
         }
       } catch (error) {
-        // Handle Errors
         const errorMessage =
           error.response?.data?.message || 'An unexpected error occurred!';
         dispatch(LoginFailure(errorMessage));
