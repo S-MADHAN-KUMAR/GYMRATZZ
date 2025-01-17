@@ -21,6 +21,10 @@ const AdminLogin = () => {
       try {
         const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/admin/login`, values,{withCredentials:true});
         if (response.status === 200) {
+          // Store token in localStorage
+          localStorage.setItem('ADMIN_TOKEN', response?.data?.token);
+  
+          // Update Redux state
           showToast('Login successful!', 'light');
           dispatch(AdminLoginSuccess(response?.data?.admin));
           navigate('/dashboard');
