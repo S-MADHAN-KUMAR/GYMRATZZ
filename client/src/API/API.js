@@ -8,7 +8,6 @@ const USER_API = axios.create({
 
 USER_API.interceptors.request.use((req) => {
   const token = Cookies.get('USER_TOKEN');
-
   
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;

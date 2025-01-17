@@ -8,6 +8,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { fetchCurrentUser } from "../../../API/user/comman";
 import axios from "axios";
 import { showToast } from "../../../helpers/toast";
+import { USER_API } from "../../../API/API";
 
 const General = () => {
   const [user, setUser] = useState(null);
@@ -34,7 +35,7 @@ const General = () => {
     validationSchema: profileValidation,
     onSubmit: async (values) => {
       try {
-        const res = await axios.put(`${import.meta.env.VITE_SERVER_URL}/user/update_profile`, values);
+        const res = await USER_API.put(`/user/update_profile`, values);
         if (res.status === 200) {
           showToast('Logged in successfully!', 'light','success');
           setIsEditable(false)

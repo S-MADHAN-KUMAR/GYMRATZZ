@@ -17,9 +17,6 @@ const ProtectRoute = ({ children, isProtectedForLoggedIn = false }) => {
     }
   }, []);
 
-  console.log(currentUser?._id);
-  
-
   if (isProtectedForLoggedIn) {
     if (currUser?.isVerified) {
       return <Navigate to="/" />;

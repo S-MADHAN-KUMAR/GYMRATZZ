@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { useLocation } from 'react-router-dom';
+import { USER_API } from '../../API/API';
 
 
 const WalletSuccess = () => {
@@ -68,7 +69,7 @@ const WalletSuccess = () => {
       hasCalled.current = true; // Mark that the request has been made
 
       try {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/handle_successful_payment/${session_id}`);
+        const res = await USER_API.get(`/user/handle_successful_payment/${session_id}`);
         if (res.status === 200) {
           console.log('Successfully added...');
           success(); // Trigger the success animation

@@ -17,7 +17,12 @@ const GoogleAuthBtn = () => {
       const credentialResponseData = jwt_decode(credentialResponse.credential); 
       const data = { credential: credentialResponseData };
 
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/handle_google_auth`, data,{withCredentials:true})
+      const response = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/user/handle_google_auth`,
+        data, 
+        { withCredentials: true }
+      );
+      
       console.log(response.data);
       dispatch(RegisterSuccess(response?.data?.user));
       showToast(response.data.message, 'light', 'success');

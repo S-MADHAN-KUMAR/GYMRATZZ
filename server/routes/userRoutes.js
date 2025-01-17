@@ -11,7 +11,7 @@ import { add_to_cart, get_user_cart, remove_cart_product, update_cart_qty } from
 import { get_all_coupons } from '../controllers/user/couponsControllers.js'
 import { get_user_order_detail, get_user_orders, handle_failed_payment, order_cancel, order_return, place_order } from '../controllers/user/orderControllers.js'
 import { add_wallet_amount, get_user_wallet, handle_successful_payment } from '../controllers/user/walletControllers.js'
-import { userAuth } from '../middlewares/userMiddleware.js'
+import {userAuth} from '../middlewares/userMiddleware.js'
 
 const router = express.Router()
 
@@ -91,7 +91,7 @@ router.post('/remove_wishlist_product',userAuth,remove_wishlist_product)
 
 router.post('/add_to_wishlist',userAuth,add_to_wishlist)
 
-router.get('/get_user_wishlist/:id',userAuth,userAuth,get_user_wishlist)
+router.get('/get_user_wishlist/:id',userAuth,get_user_wishlist)
 
 
 // //=================================[ Reset Passwords ]===============================//

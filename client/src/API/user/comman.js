@@ -1,16 +1,14 @@
 import axios from "axios";
-import { USER_API } from "../API";
+import { USER_API } from "../API.js";
 
-export const fetchCurrentUser = async (userId) => {
+export const fetchCurrentUser = async (id) => {
     try {
-      const id= userId
       
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/get_current_user/${id}`);
+      const res = await USER_API.get(`/user/get_current_user/${id}`);
   
       if (res.status === 200) {
         const fetchedUser = res?.data?.currentUser;
         if (fetchedUser.status === false) {
-          console.log('User blocked...');
           return null;
         }
         return fetchedUser;

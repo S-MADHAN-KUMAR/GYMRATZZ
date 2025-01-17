@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { showToast } from "../../helpers/toast";
+import { USER_API } from "../../API/API";
 
 const Wishlist = () => {
   const [wishlists, setWishlists] = useState([]);
@@ -40,8 +41,8 @@ const Wishlist = () => {
         productId: productId,
       };
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/user/add_to_cart`,
+      const res = await USER_API.post(
+        `/user/add_to_cart`,
         payload
       );
 
@@ -62,8 +63,8 @@ const Wishlist = () => {
         userId: currentUser?._id,
         productId,
       };
-      const res = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/user/remove_wishlist_product`,
+      const res = await USER_API.post(
+        `/user/remove_wishlist_product`,
         payload
       );
       if (res.status === 200) {

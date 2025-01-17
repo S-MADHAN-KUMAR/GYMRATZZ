@@ -251,7 +251,7 @@ export const handle_google_auth = async (req, res) => {
         user.profilePicture = picture || user.profilePicture;
         await user.save();
    
-    const token = userGenerateToken(user.email);
+    const token = userGenerateToken(email);
 
     console.log(token);
     
@@ -265,7 +265,7 @@ export const handle_google_auth = async (req, res) => {
    }
   }
 
-    const token = userGenerateToken(user.email);
+    const token = userGenerateToken(email);
 
     console.log(token);
     

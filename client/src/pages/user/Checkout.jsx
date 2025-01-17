@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCoupons, fetchUserAddress, fetchUserCart } from "../../API/user/comman";
 import { showToast } from "../../helpers/toast";
 import axios from "axios";
+import { USER_API } from "../../API/API";
 
 const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -143,7 +144,7 @@ const navigate = useNavigate()
             minDiscountAmount:appliedCoupon ? appliedCoupon.minDiscountAmount : null,
         };
 
-        const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/place_order`, payload);
+        const res = await USER_API.post(`/user/place_order`, payload);
 
         if (res.data.success) {
             if (res.data.session_url) {

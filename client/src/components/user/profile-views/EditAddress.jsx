@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchEditAddress } from '../../../API/user/comman';
 import axios from 'axios';
+import { USER_API } from '../../../API/API';
 
 const EditAddress = () => {
   const {id} = useParams()
@@ -41,7 +42,7 @@ const EditAddress = () => {
         validationSchema: addressValidation,
         onSubmit: async (values) => {
           try {
-            const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/user/update_address`, {userId:currentUser?._id,
+            const response = await USER_API.put(`/user/update_address`, {userId:currentUser?._id,
               addressId:id, newAddress:values});
             if (response.status === 200) {
               showToast('Address updated successfully!','light', 'success');

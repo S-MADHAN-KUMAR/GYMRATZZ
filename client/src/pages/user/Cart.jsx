@@ -3,6 +3,7 @@ import { fetchUserCart } from '../../API/user/comman';
 import { showToast } from '../../helpers/toast';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { USER_API } from '../../API/API';
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
@@ -31,7 +32,7 @@ const handleUpdateQty = async (productId, type) => {
   const cartId = cart._id;
 
   try {
-      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/update_cart_qty`, {
+      const res = await USER_API.post(`/user/update_cart_qty`, {
           cartId,
           productId,
           type
@@ -50,7 +51,7 @@ const handleUpdateQty = async (productId, type) => {
 
 const handleRemoveProduct = async (productId) => {
   try {
-      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/remove_cart_product/`, {
+      const res = await USER_API.post(`/user/remove_cart_product/`, {
           productId,
           userId: currentUser?._id
       });

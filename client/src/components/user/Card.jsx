@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { showToast } from "../../helpers/toast";
 import { fetchCurrentUser, fetchUserCart } from "../../API/user/comman";
+import { USER_API } from "../../API/API";
 
 const Card = ({ product }) => {
   const [user, setUser] = useState(null);
@@ -44,8 +45,8 @@ const Card = ({ product }) => {
         userId: currentUser?._id,
         productId: product?._id,
       };
-      const res = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/user/add_to_wishlist`,
+      const res = await USER_API.post(
+        `/user/add_to_wishlist`,
         payload
       );
 
@@ -64,8 +65,8 @@ const Card = ({ product }) => {
         productId: productId,
       };
 
-      const res = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/user/add_to_cart`,
+      const res = await USER_API.post(
+        `/user/add_to_cart`,
         payload
       );
 

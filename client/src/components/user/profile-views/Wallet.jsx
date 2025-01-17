@@ -4,6 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useSelector } from 'react-redux';
 import { fetchWallet } from '../../../API/user/comman';
 import { showToast } from '../../../helpers/toast';
+import { USER_API } from '../../../API/API';
 
 const stripePromise = loadStripe('pk_test_51QXxK6JHdjiLDQivSb2ntjOMKg6J4TSTrUrMdn2GdAL54lXKiICyZVF88k7bjaqudQ99X7STkDW48xa5kjV1fiTv0001XwMFaI');
 
@@ -21,7 +22,7 @@ const Wallet = () => {
     }
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/add_wallet_amount`, {
+      const res = await USER_API.post(`/user/add_wallet_amount`, {
         userId: currentUser?._id,
         amount: parseFloat(amount),
       });

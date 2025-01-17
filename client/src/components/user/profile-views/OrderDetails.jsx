@@ -5,6 +5,7 @@ import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { fetchOrderDetail } from '../../../API/user/comman'
 import { showToast } from '../../../helpers/toast'
+import { USER_API } from '../../../API/API'
 
 const OrderDetails = () => {
   const { id } = useParams()
@@ -17,7 +18,7 @@ const OrderDetails = () => {
 
   const handleOrderCancel = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/order_cancel/${id}`)
+      const res = await USER_API.get(`/user/order_cancel/${id}`)
       if (res.status === 200) {
         showToast(res?.data?.message,'light','success')
         fetchOrderDetail(id,setOrders)
@@ -29,7 +30,7 @@ const OrderDetails = () => {
 
   const handleOrderReturn = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/order_return/${id}`)
+      const res = await USER_API.get(`/user/order_return/${id}`)
       if (res.status === 200) {
         showToast(res?.data?.message,'light','success')
         fetchOrderDetail() 
