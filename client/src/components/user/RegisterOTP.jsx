@@ -55,6 +55,12 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/verify`, formdata, { withCredentials: true });
 
       if (response.status === 200) {
+        // Store token in localStorage
+          localStorage.setItem('USER_TOKEN', response?.data?.token);
+  
+          // Optionally store other user details in localStorage
+          localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
+  
         showToast('OTP verified successfully!','light', 'success');
         setIsOpenPopup(false)
         dispatch(RegisterSuccess(response?.data?.user))
