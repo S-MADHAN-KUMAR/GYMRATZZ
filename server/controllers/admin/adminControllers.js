@@ -15,20 +15,12 @@ export const adminLogin = async (req, res) => {
 
     const token = adminGenerateToken(email);
 
-    console.log(token);
-
-    res.cookie('ADMIN_TOKEN', token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict', 
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 
-    });
-
+  
       return res.status(200).json({
           success: true,
           message: 'Login successful!',
           admin: { email },
+        token
       });
   }
 
