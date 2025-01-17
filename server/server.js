@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-  origin: "http://localhost:5175", // Frontend URL (replace with deployed frontend URL if applicable)
+  origin: "gymratz-client.vercel.app", // Frontend URL (replace with deployed frontend URL if applicable)
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Explicitly specify allowed HTTP methods
   credentials: true, // Allow sending cookies or Authorization headers
   allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
