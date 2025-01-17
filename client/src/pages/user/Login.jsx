@@ -23,7 +23,7 @@ const Login = () => {
       dispatch(LoginStart());
       try {
         const response = await axios.post(
-          `http://localhost:3000/user/login`,
+          `${import.meta.env.VITE_SERVER_URL}/user/login`,
           values,
           { withCredentials: true } // Make sure to update this if you plan to use `localStorage` instead of cookies
         );
