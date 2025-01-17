@@ -22,7 +22,13 @@ const GoogleAuthBtn = () => {
         data, 
         { withCredentials: true }
       );
-      
+      // Store token in localStorage
+          localStorage.setItem('USER_TOKEN', response?.data?.token);
+  
+          // Optionally store other user details in localStorage
+          localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
+  
+          // Update Redux state
       console.log(response.data);
       dispatch(RegisterSuccess(response?.data?.user));
       showToast(response.data.message, 'light', 'success');
