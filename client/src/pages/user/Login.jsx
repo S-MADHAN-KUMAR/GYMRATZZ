@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { showToast } from '../../helpers/toast.js';
 import { useFormik } from 'formik';
 import { loginValidationSchema } from '../../validations/userValidations.js';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
 import GoogleAuthBtn from '../../components/user/GoogleAuthBtn.jsx';
 import axios from 'axios';
 import ForgotPasswordEmail from '../../components/user/ForgotPasswordEmail.jsx';
@@ -12,6 +12,7 @@ import { LoginFailure, LoginStart, LoginSuccess } from '../../redux/user/userSli
 const Login = () => {
   const [IsOpenEmailPopup, setIsOpenEmailPopup] = useState(false);
   const dispatch = useDispatch();
+   const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -35,6 +36,7 @@ const Login = () => {
         if (response.status === 200) {
           dispatch(LoginSuccess(response?.data?.user));
           showToast('Logged in successfully!', 'light', 'success');
+           navigate('/')
         }
       } catch (error) {
         // Handle Errors
