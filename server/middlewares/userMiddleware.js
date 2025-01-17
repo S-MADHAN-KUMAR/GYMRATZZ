@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
 export const userAuth = (req, res, next) => {
-  // Extract the token from cookies
-  const token = req.cookies.USER_TOKEN;
+  // Extract the token from the Authorization header
+  const token = req.headers.authorization?.split(' ')[1];  // 'Bearer <token>'
 
   console.log('Token extracted:', token);
 
