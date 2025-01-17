@@ -1,10 +1,11 @@
+import axios from 'axios'
 import React, { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
 import confetti from 'canvas-confetti';
+import { useLocation } from 'react-router-dom';
 
-const Wallet_Success = () => {
-  const location = useLocation();
+
+const WalletSuccess = () => {
+  const location = useLocation()
   const params = new URLSearchParams(location.search);
   const session_id = params.get('session_id'); // Extract the session_id from the URL
 
@@ -98,4 +99,4 @@ const Wallet_Success = () => {
   );
 };
 
-export default Wallet_Success;
+export default WalletSuccess;

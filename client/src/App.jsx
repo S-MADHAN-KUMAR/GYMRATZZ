@@ -42,12 +42,12 @@ import ProtectRoute from "./pages/user/ProtectRoute";
 import Checkout from "./pages/user/Checkout";
 import OrderSuccess from "./components/user/OrderSuccess";
 import OrderFailure from "./components/user/OrderFailure";
-import Wallet_Success from "../../server/controllers/user/Wallet_Success";
 import Breadcrumbs from "./components/user/Breadcrumbs";
 import About from "./pages/user/About";
 import Contact from "./pages/user/Contact";
 import AdminLogin from "./pages/admin/AdminLoagin";
 import AdminProtectPage from "./pages/admin/AdminProtectPage";
+import WalletSuccess from "./components/user/WalletSuccess";
 
 const UserLayout = ({ children }) => (
   <>
@@ -96,7 +96,7 @@ const App = () => {
 
 <Route path="/order-success" element={<OrderSuccess />} />
 <Route path="/order-failure" element={<OrderFailure />} />
-<Route path="wallet_success" element={<Wallet_Success />} />
+<Route path="wallet_success" element={<WalletSuccess />} />
 
 <Route path="admin_login" element={<AdminProtectPage ><AdminLogin /></AdminProtectPage>} />
 
