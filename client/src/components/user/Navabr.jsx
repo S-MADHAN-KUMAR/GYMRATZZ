@@ -1,9 +1,23 @@
-import React,{ useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { fetchCurrentUser } from "../../API/user/comman";
 
 const Navabr = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate()
+    const [user, setUser] = useState(null);
+    const { currentUser } = useSelector((state) => state.user);
+    const loadUser = async () => {
+      const fetchUserData = await fetchCurrentUser(currentUser?._id);
+      setUser(fetchUserData);
+    };
+  
+    useEffect(() => {
+      loadUser();
+    }, []);
+
   return (
    <div className="flex flex-col items-center justify-center sticky top-0 z-50">
      <nav className='bg-white flex items-center w-full justify-around border p-2 border-gray-800  '>
@@ -22,25 +36,32 @@ const Navabr = () => {
             <a href="/about" className="hover:text-red-500 transition-colors drop-shadow-sm">
               About
             </a>
-            <a href="#contact" className="hover:text-red-500 transition-colors drop-shadow-sm">
+            <a href="/contact" className="hover:text-red-500 transition-colors drop-shadow-sm">
               Contact
             </a>
           </div>
         {/* ICONS */}
-        <div className="flex gap-x-3">
-         <img
+        <div className="flex gap-x-2 md:gap-x-8">
+       <div className="flex items-center gap-x-2 cursor-pointer" onClick={()=>navigate('/wishlist')}>
+       <h1 className=" text-2xl hidden md:block">wishlist</h1>
+        <img
         src="https://img.icons8.com/?size=100&id=5twNojKL5zU7&format=png&color=000000"
         className="w-7 md:w-9 hover:scale-110 cursor-pointer "
       />
+       </div>
+       <div className="flex items-center gap-x-2 cursor-pointer" onClick={()=>navigate('/cart')}>
+       <h1 className=" text-2xl hidden md:block">cart</h1>
        <img
         src="https://img.icons8.com/?size=100&id=pMGoyzVDvHJe&format=png&color=000000"
         className="w-7 md:w-9 hover:scale-110 cursor-pointer"
       />
         </div>
+        </div>
         {/* PROFILE */}
         <div className="">
-            <div className="">
-          <img  className='w-8 md:w-12' src="https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000"/>
+            <div onClick={()=>navigate('/profile/general')} className="flex items-center gap-x-2 cursor-pointer">
+          <h1 className="text-4xl hidden md:block">profile</h1>
+          <img   className='w-8 cursor-pointer md:w-12' src={user?.profilePicture ? user?.profilePicture : "https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000"}/>
             </div>
         </div>
 

@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 
 export const userAuth = (req, res, next) => {
-
   const token = req.cookies.USER_TOKEN;
 
   if (!token) {
@@ -16,12 +15,15 @@ export const userAuth = (req, res, next) => {
       return res.status(403).json({ message: 'Forbidden: Invalid token' });
     }
 
-    req.user = decoded;
+    req.user = decoded; // This will hold the decoded JWT (including the email)
 
     const currentTime = Math.floor(Date.now() / 1000);
     if (decoded.exp < currentTime) {
       return res.status(403).json({ message: 'Forbidden: Token expired' });
     }
+
+    // Log the decoded email here
+    console.log(decoded.email);
 
     next();
   });

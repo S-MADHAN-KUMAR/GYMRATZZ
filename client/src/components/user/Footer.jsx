@@ -8,9 +8,9 @@ const Footer = () => {
   {/* Logo Section */}
   <div className="flex h4 gap-x-4 items-center mb-4 tracking-widest">
   <img src="/public/logo.png" className="w-12 h-12 " />    
-  <p className="text-5xl text-white">
-    gym <span className=" text-transparent text-orange-500">RATS</span>
-  </p>
+  <h1 className="text-5xl text-white">
+   gym rats
+  </h1>
       </div>
   
 

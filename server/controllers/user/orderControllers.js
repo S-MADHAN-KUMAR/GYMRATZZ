@@ -176,8 +176,8 @@ export const place_order = async (req, res) => {
         await order.save();
 
         const session = await stripe.checkout.sessions.create({
-          success_url: `${origin}/success?order_id=${order._id}`,
-          cancel_url: `${origin}/failure?order_id=${order._id}`,
+          success_url: `${origin}/order-success?order_id=${order._id}`,
+          cancel_url: `${origin}/order-failure?order_id=${order._id}`,
           payment_method_types: ["card"],
           line_items,
           mode: "payment",
@@ -304,7 +304,3 @@ export const handle_failed_payment = async(req,res)=>{
     return res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }
-
-
-
-

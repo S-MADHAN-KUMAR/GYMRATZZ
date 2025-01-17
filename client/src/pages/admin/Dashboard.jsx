@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { AiFillProduct } from "react-icons/ai";
 import { MdCategory } from "react-icons/md";
 import { BiSolidOffer } from "react-icons/bi";
@@ -12,8 +12,23 @@ import { RiHome9Fill } from "react-icons/ri";
 import { FaCartFlatbed } from "react-icons/fa6";
 import { IoMdLogIn } from "react-icons/io";
 import { MdOutlineKeyboardDoubleArrowLeft,MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+import { showBlockConfirmation } from "../../helpers/Sweat";
+import { AdminLogout } from "../../redux/admin/adminSlice";
+import { useDispatch } from "react-redux";
 
 const Dashboard = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+    const handleLogout = async () => {
+      showBlockConfirmation('Do you want to LOGOUT', 'LOGOUT', async () => {
+        try {
+          dispatch(AdminLogout());
+          navigate('/admin_login');
+        } catch (error) {
+          console.error('Error logging out:', error); // Updated log message for clarity
+        }
+      });
+    };
   const [isMenuOpen,setIsMenuOpen] = useState(false)
   return (
     <div className="flex overflow-x-hidden bg-gray-800 w-full h-screen text-[#e8e8e8]">
@@ -154,7 +169,7 @@ const Dashboard = () => {
           </NavLink>
         </div>
  {/* Logout Button */}
- <button>
+ <button onClick={handleLogout}>
  <p className={`${isMenuOpen ? ' hover:scale-105 duration-500  button ' : "hidden"}`} >Logout</p>
         {!isMenuOpen &&   <IoMdLogIn/>}
         </button>

@@ -7,220 +7,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 const Home = () => {
-  const products = [
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 1800,
-      orginalPrice: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-    {
-      _id: "6784c4ea212627c004ca8a26",
-      name: "pTron Bassbuds Viper in Ear TWS Earbuds",
-      price: 2000,
-      description:
-        "TWS Earbuds with AptSense 40ms Low Latency Mobile Gaming | Immersive Stereo Sound Quality with Deep Bass | 32Hrs Total Playtime with the Charging Case | Ergo-fit Bluetooth Earphones with Touch Controls. HD Mic with TruTalk ENC (Environmental Noise Cancellation) for Enhanced Voice Calls | Ultra Low-Latency Game & Music Modes for Mobile Entertainment | BT v5.3 with 1-Step Pairing & 10m Stable Wireless Connect",
-      stock: 2000,
-      status: true,
-      category: "67655698ef5a0933139c0913",
-      brand: "67804997f2c3c401aefe58e9",
-      popularity: 351,
-      imageUrls: [
-        "https://assets.ajio.com/medias/sys_master/root/20241128/4ggq/67483172c148fa1b30f29cb0/-473Wx593H-700817714-greymelange-MODEL.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/jhjc09uty87l7wozsvcd.jpg",
-        "https://assets.ajio.com/medias/sys_master/root/20240930/KBlE/66fac4b3260f9c41e845c4a1/-473Wx593H-700517025-greymelange-MODEL4.jpg",
-        "https://res.cloudinary.com/dhcjyofjl/image/upload/v1736493310/owxwqvnrr3jj5ntdmqj1.jpg",
-      ],
-      createdAt: 1734696814635,
-      updatedAt: 1736694871763,
-      __v: 0,
-    },
-  ];
-
 
   const [banners, setBanners] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -288,7 +74,7 @@ const Home = () => {
             <span className="flex justify-evenly items-center h-full gap-x-4">
               {brands.length > 0 ? (
                 brands.map((brand, index) => (
-                  <img key={index} src={brand?.imageUrl} className="w-40" />
+                  <img key={index} src={brand?.imageUrl} className="w-40 hover:scale-105 duration-500" />
                 ))
               ) : (
                 <h1>No brands found</h1>
@@ -297,7 +83,7 @@ const Home = () => {
             <span className="hidden md:flex justify-evenly items-center h-full gap-x-4">
               {brands.length > 0 ? (
                 brands.map((brand, index) => (
-                    <img key={index} src={brand?.imageUrl} className="w-40" />
+                    <img key={index} src={brand?.imageUrl} className="w-40 hover:scale-105 duration-500" />
                   ))
               ) : (
                 <h1>No brands found</h1>
@@ -311,8 +97,8 @@ const Home = () => {
       <div className="w-full px-2 md:px-12 my-16">
         <h1 className="header mb-3  md:mb-5 ">Popular products</h1>
         <div className="flex gap-x-10 w-full overflow-x-auto scrollbar-none py-6">
-        {products.length > 0 ? (
-                products.map((product) => 
+        {newArrivals.length > 0 ? (
+                newArrivals.map((product) => 
                   {
                     return <Card key={product?._id} product={product} />;
                   }

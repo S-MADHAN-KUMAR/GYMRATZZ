@@ -102,6 +102,20 @@ export  const verifyOTP = async (req, res) => {
       );
 
       const updatedUser = await UserModel.findOne({ email });
+
+      const token = userGenerateToken(email);
+
+    console.log(token);
+    
+    res.cookie('USER_TOKEN', token, {
+      path: '/',
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // HTTPS-only in production
+      sameSite: 'Strict', // Strict for security
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+    });
+    
+
   
       res.status(200).json({ message: 'User verified successfully!' , user:updatedUser});
     } catch (err) {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { IoIosSearch } from "react-icons/io";
-import Breadcrumbs from "../../components/user/Breadcrumbs.jsx";
 import { getAllproducts } from "../../API/shop.js";
 import Card from '../../components/user/Card.jsx'
+import Aside from "../../components/user/Aside.jsx";
 
 const Shop = () => {
   const [numItems, setNumItems] = useState(9);
@@ -67,12 +67,11 @@ const Shop = () => {
 
   return (
     <div className="container">
-      {/* BREADCRUMBS */}
-      <Breadcrumbs />
-      {/* SEARCH */}
-      <div className="flex border-gray-800 border m-2 ">
+<div className="flex justify-between md:flex-row flex-col">
+        {/* SEARCH */}
+        <div className="flex border-gray-800 border m-2 md:w-9/12">
         <input value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} type="text" placeholder="Search products..." className=" outline-none pop w-11/12 md:p-2 p-1" />
-        <div className="bg-gray-800 p-1 flex items-center justify-center w-2/12 md:w-1/12">
+        <div className="bg-gray-800 p-1 flex items-center justify-center w-2/12">
 <IoIosSearch className="text-gray-100 md:w-7 md:h-7 w-6 h-6"/>
         </div>
       </div>
@@ -103,19 +102,27 @@ const Shop = () => {
           <option value="Popularity">Popularity</option>
         </select>
       </div>
+</div>
+      <div className="flex">
+        <Aside/>
       {/* PRODUCTS */}
-      <div className="w-full relative p-2 grid md:grid-cols-6 mb-4 place-content-center gap-4">
+      <div className="bg-[#f0f0f153] w-full p-5 ">
+      <p className="h1 text-2xl text-gray-800 tracking-widest font-medium ">we have found <span className="text-blue-600">{numItems}</span> products</p>
+      <div className="w-full relative grid md:grid-cols-4 my-10 gap-10">
             {products.length > 0 ? (
               products.slice(0, numItems).map((product) => (
                 <Card key={product._id} product={product} />
               ))
             ) : (
-              <div className='absolute  top-1/2 left-1/2 transform -translate-x-1/2 '>
-                <img className='w-[300px]' src="https://media0.giphy.com/media/WSxyc3kHnD9GvVbWDO/giphy.gif?cid=6c09b952ytj5o1pa6h1sxb9seg2bq8rvwkx7kprawg1rmsz7&ep=v1_stickers_search&rid=giphy.gif&ct=s" alt="" />
-                <p className='h1 whitespace-nowrap text-4xl font-medium mt-6 to-gray-600 tracking-wider'>No products found !</p>
+              <div className='flex flex-col w-full justify-center items-center absolute top-12 left-1/2 transform -translate-x-1/2 '>
+                <img className='w-[200px] md:w-[300px]' src="https://media0.giphy.com/media/WSxyc3kHnD9GvVbWDO/giphy.gif?cid=6c09b952ytj5o1pa6h1sxb9seg2bq8rvwkx7kprawg1rmsz7&ep=v1_stickers_search&rid=giphy.gif&ct=s" alt="" />
+                <p className='h1 whitespace-nowrap text-lg md:text-4xl font-medium mt-6 to-gray-600 tracking-wider'>No products found !</p>
                 </div>
             )}
           </div>
+          </div>
+       </div>
+ 
     </div>
   );
 };

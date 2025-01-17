@@ -11,7 +11,8 @@ const CartShema = new mongoose.Schema(
         quantity: { type: Number },
         image: { type: String },
         categoryId: { type: mongoose.Schema.Types.ObjectId },
-        brandId: { type: mongoose.Schema.Types.ObjectId }
+        brandId: { type: mongoose.Schema.Types.ObjectId },
+        offerDetails: { type: Object }, 
       },
     ],
     totalQty: {

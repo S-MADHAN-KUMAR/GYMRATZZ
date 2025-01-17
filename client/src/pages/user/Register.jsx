@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { showToast } from '../../helpers/toast.js';
 import { useFormik } from 'formik';
 import { RegisterValidation } from '../../validations/userValidations.js';
 import {Link} from 'react-router-dom'
+import GoogleAuthBtn from '../../components/user/GoogleAuthBtn.jsx';
+import { useDispatch } from 'react-redux';
+import { RegisterFailure, RegisterStart, RegisterSuccess } from '../../redux/user/userSlice.js';
+import RegisterOTP from '../../components/user/RegisterOTP.jsx';
+import axios from 'axios';
 
 const Register = () => {
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
         name: '',
@@ -15,12 +22,15 @@ const Register = () => {
     },
     validationSchema: RegisterValidation,
     onSubmit: async (values) => {
+      dispatch(RegisterStart())
       try {
-        // const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/login`, values);
-        // if (response.status === 200) {
-        //   showToast('Logged in successfully!', 'success');
-        // }
+        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/register`, values);
+        if (response.status === 200) {
+          dispatch(RegisterSuccess(response?.data?.user));
+          setIsOpenPopup(true)
+        }
       } catch (error) {
+        dispatch(RegisterFailure(error.response?.data?.message))
         console.error('Error during login:', error);
         const errorMessage = error.response?.data?.message || 'An unexpected error occurred!';
         showToast(errorMessage, 'dark', 'error');
@@ -29,10 +39,10 @@ const Register = () => {
   });
 
   return (
-    <div className="flex min-h-[100vh]">
+    <div className="flex justify-between container max-h-[90vh]">
       <form
       noValidate
-        className="form-theme flex flex-col gap-y-4 w-full md:w-1/2"
+        className="form-theme flex flex-col gap-y-4 w-full md:w-1/2 "
         onSubmit={formik.handleSubmit}
       >
         <h1>Register Form</h1>
@@ -96,9 +106,10 @@ const Register = () => {
         </div>
 
         <div className="flex justify-between mt-2 gap-x-5">
-          <button type="submit" className="button">
-            Log in
+          <button type="submit" className="w-1/3 button">
+           Register
           </button>
+          <GoogleAuthBtn/>
         </div>
 
 {/* Signup Link */}
@@ -115,9 +126,15 @@ const Register = () => {
       <div className=" w-1/2 hidden md:block p-5">
           <img
             src="https://i.pinimg.com/originals/c0/82/91/c082911f2a616883a1e0652bff686f73.gif"
-            className="w-full h-full object-contain "
+            className="w-full h-full object-cover"
           />
         </div>
+        {isOpenPopup && (
+        <RegisterOTP
+          setIsOpenPopup={setIsOpenPopup}
+          showToast={showToast}
+        />
+      )}
     </div>
   );
 };

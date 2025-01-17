@@ -2,18 +2,23 @@ import CouponModel from "../../models/couponMedel.js";
 
 export const get_all_coupons = async (req, res) => {
   try {
-    const coupons = await CouponModel.find();
+    const currentDate = new Date();
+
+    const coupons = await CouponModel.find({
+      startDate: { $lte: currentDate },
+      endDate: { $gte: currentDate },  
+      status: true                
+    });
 
     if (coupons.length > 0) {
-      res.status(200).json( coupons );
+      res.status(200).json(coupons);
     } else {
       res.status(404).json({ message: 'No active coupons found' });
     }
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
-}
-
+};
 export const add_coupon = async (req, res) => {
   try {
     const {

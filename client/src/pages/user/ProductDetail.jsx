@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { MdOutlineStarPurple500 ,MdOutlineStarOutline ,MdOutlineStarHalf  } from "react-icons/md";
 import { fetchProductDetail } from '../../API/productDetail.js';
 import { SiTicktick } from "react-icons/si";
 import { CgUnavailable } from "react-icons/cg";
-import Breadcrumbs from '../../components/user/Breadcrumbs.jsx';
+import { fetchUserCart } from '../../API/user/comman.js';
+import { showToast } from '../../helpers/toast.js';
+import { useSelector } from "react-redux";
+import axios from 'axios';
+import RelatedProducts from '../../components/user/RelatedProducts.jsx';
 
 const ProductDetail = () => {
     const rating = 4.5
@@ -14,6 +18,10 @@ const ProductDetail = () => {
     const [images, setImages] = useState([])
     const [isHovered, setIsHovered] = useState(false);
     const [zoomStyle, setZoomStyle] = useState({});
+    const { currentUser } = useSelector((state) => state.user);
+    const [cart, setCart] = useState(null);
+    const [added, setAdded] = useState(false);
+    const navigate = useNavigate()
 
     const imgRef = useRef(null);
 
@@ -33,18 +41,68 @@ const ProductDetail = () => {
     };
   
     const handleImageClick = (image) => setMainImage(image);
-  
+
+      const loadCart = async () => {
+        try {
+          if (currentUser) {
+            const fetchedCart = await fetchUserCart(currentUser?._id, showToast);
+            setCart(fetchedCart);
+          }
+        } catch (err) {
+          console.log(err.message || "Something went wrong.");
+        }
+      };
  
     useEffect(()=>{
      const loadProductDetail = async()=>{
        await fetchProductDetail(setProduct, setMainImage, setImages, id)
      }
      loadProductDetail()
+     loadCart()
     },[])
+
+    console.log(product);
+    
+
+    const findMaxStock = (productId) => {
+      const cartProduct = cart?.products.find(
+        (product) => product.productId === productId
+      );
+      return cartProduct ? cartProduct.quantity : 0;
+    };
+  
+    const stockStatus =
+      product?.stock <= 2 ||
+      product?.stock === 1 ||
+      findMaxStock(product?._id) >= 5 ||
+      product?.stock - findMaxStock(product?._id) <= 2;
+
+    const handleAddToCart = async (productId) => {
+      try {
+        const payload = {
+          userId: currentUser?._id,
+          productId: productId,
+        };
+  
+        const res = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/user/add_to_cart`,
+          payload
+        );
+  
+        if (res.status === 200) {
+          setAdded(true);
+          showToast("Products added to cart!", "light", "success");
+        } else {
+          console.error("Failed to add product to cart:", res.data.message);
+        }
+      } catch (error) {
+        console.error("Error adding to cart:", error.message);
+      }
+    };
+    
 
   return (
    <div>
-    <Breadcrumbs/>
      <div className='md:h-[90vh] w-full flex flex-col md:flex-row justify-between items-center'>
 
 <div className="flex md:flex-row flex-col-reverse h-[60vh] md:h-[80vh] md:p-5 md:w-6/12 w-full">
@@ -146,11 +204,43 @@ const ProductDetail = () => {
      <p>Out Of Stock</p>
      </div>
  }
- <div className="flex">
-     <button className='bg-black pop text-white uppercase text-lg px-6 py-2 tracking-wider'>
-         add to cart
-     </button>
- </div>
+ {/* ADD TO CART BTN */}
+
+          {stockStatus ? (
+            <button
+              className={
+                product.stock <= 2
+                  ? "bg-red-700 rounded text-white w-fit px-8 py-3 "
+                  : findMaxStock(product._id) >= 5 ||
+                    product.stock - findMaxStock(product._id) <= 2
+                  ? "bg-[#e3c114] rounded text-white w-fit px-8 py-3"
+                  : "bg-green-700 rounded text-white w-fit px-8 py-3"
+              }
+            >
+              <p  className="pop uppercase text-xl font-semibold tracking-wider">
+                {product.stock <= 2
+                  ? "Out of Stock"
+                  : findMaxStock(product._id) >= 5 ||
+                    product.stock - findMaxStock(product._id) <= 2
+                  ? "Limit Reached"
+                  : "In Stock"}
+              </p>
+            </button>
+          ) : added ? (
+            <button
+              onClick={() => navigate("/cart")}
+              className="bg-green-600 rounded text-white w-fit px-8 py-3"
+            >
+              <p className="pop uppercase text-xl font-semibold tracking-wider">Go to cart</p>
+            </button>
+          ) : (
+            <button
+              onClick={()=>handleAddToCart(product?._id)}
+              className="bg-black rounded text-white w-fit px-8 py-3 "
+            >
+                  <p className="pop uppercase text-xl font-semibold tracking-wider">Add to cart</p>
+            </button>
+          )}
 
 
  <div >
@@ -172,6 +262,7 @@ const ProductDetail = () => {
  </div>
  </div>
  </div>
+ <RelatedProducts id={id}/>
    </div>
   )
 }

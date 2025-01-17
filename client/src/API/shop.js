@@ -13,3 +13,15 @@ export const getAllproducts = async () => {
     }
   };
   
+  export const fetchRelatedProducts = async (id,setProducts) => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/get_related_products/${id}`);
+      if (res.status === 200) {
+        setProducts(res?.data?.relatedProducts )
+      } else {
+        console.log(res.data.message);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };

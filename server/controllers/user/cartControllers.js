@@ -1,80 +1,92 @@
 import CartModel from '../../models/cartModel.js'
+import ProductOfferModel from '../../models/productOfferModel.js';
 import ProductModel from '../../models/productsModel.js'
 
 export const add_to_cart = async (req, res) => {
-    try {
-      const { userId, productId } = req.body;
-  
-      if (!userId || !productId) {
-        return res.status(400).json({ success: false, message: 'Missing required fields' });
-      }
-  
-      const userCart = await CartModel.findOne({ userId });
-      const product = await ProductModel.findById(productId);
-  
-      if (!product) {
-        return res.status(404).json({ success: false, message: 'Product not found' });
-      }
-  
-      if (!userCart) {
-        const newCart = new CartModel({
-          userId,
-          products: [
-            {
-              productId,
-              name: product.name,
-              price: product.price,
-              quantity: 1,
-              image: product.imageUrls?.[0],
-              categoryId:product.category,
-              brandId:product.brand
-            },
-          ],
-          totalAmt: product.price,
-          totalQty: 1,
-        });
-  
-        await newCart.save();
-        return res.status(200).json({ success: true, message: "Item added to cart", cart: newCart });
-      }
-  
-      const existingProduct = userCart.products.find(
-        (item) => item.productId.toString() === productId.toString()
-      );
-  
-      if (existingProduct) {
-        existingProduct.quantity += 1;
-      } else {
-        userCart.products.push({
-          productId,
-          name: product.name,
-          price: product.price,
-          quantity: 1,
-          image: product.imageUrls?.[0],
-          categoryId:product.category,
-          brandId:product.brand
-        });
-      }
-  
-      const totals = userCart.products.reduce(
-        (acc, item) => {
-          acc.totalAmt += item.price * item.quantity;
-          acc.totalQty += item.quantity;
-          return acc;
-        },
-        { totalAmt: 0, totalQty: 0 }
-      );
-  
-      userCart.totalAmt = totals.totalAmt;
-      userCart.totalQty = totals.totalQty;
-  
-      await userCart.save();
-      return res.status(200).json({ success: true, message: "Cart updated", cart: userCart });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false, message: 'Internal server error' });
+  try {
+    const { userId, productId } = req.body;
+
+    if (!userId || !productId) {
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
     }
-  } 
+
+    const userCart = await CartModel.findOne({ userId });
+    const product = await ProductModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    // Check for product offers
+    const productOffer = await ProductOfferModel.findOne({ productId });
+    const currentDate = new Date();
+
+    const isOfferValid = productOffer && 
+                         currentDate >= new Date(productOffer.startDate) && 
+                         currentDate <= new Date(productOffer.endDate);
+
+    const productDetails = {
+      productId,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      image: product.imageUrls?.[0],
+      categoryId: product.category,
+      brandId: product.brand,
+      offerDetails: isOfferValid
+        ? productOffer
+        : null,
+    };
+
+    if (!userCart) {
+      const discountedPrice = isOfferValid
+        ? product.price - product.price * (productOffer.discount / 100)
+        : product.price;
+
+      const newCart = new CartModel({
+        userId,
+        products: [productDetails],
+        totalAmt: discountedPrice,
+        totalQty: 1,
+      });
+
+      await newCart.save();
+      return res.status(200).json({ success: true, message: 'Item added to cart', cart: newCart });
+    }
+
+    const existingProduct = userCart.products.find(
+      (item) => item.productId.toString() === productId.toString()
+    );
+
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      userCart.products.push(productDetails);
+    }
+
+    const totals = userCart.products.reduce(
+      (acc, item) => {
+        const priceAfterDiscount = item.offerDetails
+          ? item.price - item.price * (item.offerDetails.discount / 100)
+          : item.price;
+        acc.totalAmt += priceAfterDiscount * item.quantity;
+        acc.totalQty += item.quantity;
+        return acc;
+      },
+      { totalAmt: 0, totalQty: 0 }
+    );
+
+    userCart.totalAmt = totals.totalAmt;
+    userCart.totalQty = totals.totalQty;
+
+    await userCart.save();
+    return res.status(200).json({ success: true, message: 'Cart updated', cart: userCart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 
 export const get_user_cart = async (req, res) => {
     try {

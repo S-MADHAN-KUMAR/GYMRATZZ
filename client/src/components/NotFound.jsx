@@ -66,8 +66,8 @@ const NotFound = () => {
         </div>
       </div>
     </StyledWrapper>
-    <h1>Page not found </h1>
-    <a href='/' className='pop text-xs font-medium to-sky-600'>Return Home</a>
+    <h1 className='text-5xl'>Page not found </h1>
+    <a href='/' className='pop text font-medium to-sky-600'>Return Home</a>
    </div>
   );
 }

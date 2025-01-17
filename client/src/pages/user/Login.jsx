@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { showToast } from '../../helpers/toast.js';
 import { useFormik } from 'formik';
 import { loginValidationSchema } from '../../validations/userValidations.js';
 import {Link} from 'react-router-dom'
+import GoogleAuthBtn from '../../components/user/GoogleAuthBtn.jsx';
+import axios from 'axios';
+import ForgotPasswordEmail from '../../components/user/ForgotPasswordEmail.jsx';
+import { useDispatch } from 'react-redux';
+import { LoginFailure, LoginStart, LoginSuccess } from '../../redux/user/userSlice.js';
 
 const Login = () => {
+  const [IsOpenEmailPopup, setIsOpenEmailPopup] = useState(false);
+  const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -12,24 +19,35 @@ const Login = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
+
+      dispatch(LoginStart());
       try {
-        // const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/login`, values);
-        // if (response.status === 200) {
-        //   showToast('Logged in successfully!', 'success');
-        // }
+        const response = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/user/login`,
+          values, { withCredentials: true }
+        );
+  
+        if (response.status === 200) {
+          dispatch(LoginSuccess(response?.data?.user));
+          showToast('Logged in successfully!', 'light', 'success');
+        }
       } catch (error) {
+        // Handle Errors
+        const errorMessage =
+          error.response?.data?.message || 'An unexpected error occurred!';
+        dispatch(LoginFailure(errorMessage));
         console.error('Error during login:', error);
-        const errorMessage = error.response?.data?.message || 'An unexpected error occurred!';
         showToast(errorMessage, 'dark', 'error');
       }
     },
   });
+  
 
   return (
-    <div className="flex container">
+    <div className="flex container max-h-[90vh] ">
       <form
       noValidate
-        className="form-theme flex flex-col  gap-y-4 w-full md:w-1/2 md:px-32"
+        className="form-theme flex flex-col  gap-y-4 w-full md:w-1/2 md:px-32 "
         onSubmit={formik.handleSubmit}
       >
         <h1>Login Form</h1>
@@ -51,10 +69,18 @@ const Login = () => {
           </div>
         ))}
 
+<h2
+            onClick={() => setIsOpenEmailPopup(true)}
+            className=" cursor-pointer text-sm mb-4 text-center pop tracking-wider text-gray-300"
+          >
+            Forgot Your Password ?
+          </h2>
+
         <div className="flex justify-between mt-2 gap-x-5">
-          <button type="submit" className="button">
+          <button type="submit" className="w-full button">
             Log in
           </button>
+          <GoogleAuthBtn/>
         </div>
 
 {/* Signup Link */}
@@ -67,12 +93,13 @@ const Login = () => {
 </div>
 
       </form>
-      <div className=" w-1/2 hidden md:block p-5">
+      <div className=" w-1/2 hidden md:block p-5 ">
           <img
             src="https://i.pinimg.com/originals/c0/82/91/c082911f2a616883a1e0652bff686f73.gif"
             className="w-full h-full object-contain "
           />
         </div>
+        {IsOpenEmailPopup && <ForgotPasswordEmail setIsOpenEmailPopup={setIsOpenEmailPopup} showToast={showToast} />}
     </div>
   );
 };

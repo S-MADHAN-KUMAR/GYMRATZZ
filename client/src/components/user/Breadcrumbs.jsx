@@ -11,7 +11,7 @@ const Breadcrumbs = () => {
   }, [location]);
 
   return (
-    <div className=" bg-gray-800 text-gray-100 p-2 flex pop uppercase font-medium text-sm tracking-widest gap-x-4 w-full items-center">
+    <div className=" bg-gray-800 text-gray-100 p-2 flex pop uppercase font-medium text-xs tracking-widest gap-x-4 w-full items-center">
       <p>
         <Link to="/">
           Home

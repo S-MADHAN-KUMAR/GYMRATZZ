@@ -13,13 +13,13 @@ const PORT = process.env.PORT
 app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
-const corsOptions = {
-  origin: '*', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-  // allowedHeaders: ['Content-Type', 'Authorization'], 
-};
-app.use( cors(corsOptions));
-
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+    allowedHeaders: ['Authorization', 'UserEmail', 'Content-Type'],
+  })
+);
 //======================config=========================//
 
 connectDB()

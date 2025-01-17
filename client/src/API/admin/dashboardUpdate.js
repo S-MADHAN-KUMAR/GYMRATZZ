@@ -1,7 +1,7 @@
-import axios from "axios";
 import { showBlockConfirmation } from "../../helpers/Sweat.js";
 import { toast } from "react-toastify";
 import { showToast } from "../../helpers/toast.js";
+import { ADMIN_API } from "../API.js";
 
 export const handleToggleBlock = async (id, currentStatus,loadUsers) => {
     const newStatus = currentStatus === true ? false : true;
@@ -10,7 +10,7 @@ export const handleToggleBlock = async (id, currentStatus,loadUsers) => {
 
     showBlockConfirmation(title, newStatus, async () => {
       try {
-        await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlock`, { id, status: newStatus });
+        await ADMIN_API.put(`/admin/toggleBlock`, { id, status: newStatus });
 
         loadUsers();
         toast.success(`User has been ${newStatus ? 'unblocked' : 'blocked'}`);
@@ -29,7 +29,7 @@ export const handleToggleProductBlock = async (id, currentStatus,loadProducts) =
 
     showBlockConfirmation(title, newStatus, async () => {
       try {
-        await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockProduct`, { id, status: newStatus });
+        await ADMIN_API.put(`/admin/toggleBlockProduct`, { id, status: newStatus });
         loadProducts();
         toast.success(`Product has been ${newStatus ? 'listed' : 'unlisted'}`);
       } catch (error) {
@@ -43,7 +43,7 @@ export  const handleDeleteProduct = async (id,loadProducts) => {
     const title = 'Do you want to delete this product?';
     showBlockConfirmation(title, 'delete', async () => {
       try {
-        const res = await axios.delete(`${import.meta.env.VITE_SERVER_URL}/admin/delete_product/${id}`)
+        const res = await ADMIN_API.delete(`/admin/delete_product/${id}`)
         if (res.status === 200) {
             loadProducts()
           showToast('Product deleted successfully', 'light', 'success');
@@ -59,7 +59,7 @@ export  const handleDeleteProduct = async (id,loadProducts) => {
 
 export const fetchBrands = async (setBrands) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_brands`);
+      const res = await ADMIN_API.get(`/admin/get_all_brands`);
       if (res.status === 200) {
         const validBrands = res.data.filter(brand => brand.status === true);
         setBrands(validBrands);
@@ -72,7 +72,7 @@ export const fetchBrands = async (setBrands) => {
 
 export const fetchCategories = async (setCategories) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_categories`);
+      const res = await ADMIN_API.get(`/admin/get_all_categories`);
       if (res.status === 200) {
         const validCategories = res.data.filter(category => category.status === true);
         setCategories(validCategories);
@@ -85,7 +85,7 @@ export const fetchCategories = async (setCategories) => {
 
 export const fetchEditProduct = async (id,setProduct) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_edit_product/${id}`);
+      const res = await ADMIN_API.get(`/admin/get_edit_product/${id}`);
       if (res.status === 200) {
         setProduct(res?.data);
       }
@@ -101,7 +101,7 @@ export const handleToggleBrandsBlock = async (id, currentStatus,loadBrands) => {
 
   showBlockConfirmation(title, newStatus, async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockBrands/${id}`, { status: newStatus });
+      await ADMIN_API.put(`/admin/toggleBlockBrands/${id}`, { status: newStatus });
       loadBrands();
       toast.success(`Brand has been ${newStatus ? 'listed' : 'unlisted'}`);
     } catch (error) {
@@ -117,7 +117,7 @@ export const handleToggleBannerBlock = async (id, currentStatus,loadBanners) => 
 
   showBlockConfirmation(title, newStatus, async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockBanners/${id}`, { status: newStatus });
+      await ADMIN_API.put(`/admin/toggleBlockBanners/${id}`, { status: newStatus });
       loadBanners();
       toast.success(`Banner has been ${newStatus ? 'listed' : 'unlisted'}`);
     } catch (error) {
@@ -133,7 +133,7 @@ export const handleToggleCouponBlock = async (id, currentStatus,loadCoupons) => 
 
   showBlockConfirmation(title, newStatus, async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockCoupon/${id}`, { status: newStatus });
+      await ADMIN_API.put(`/admin/toggleBlockCoupon/${id}`, { status: newStatus });
       loadCoupons();
       toast.success(`Product has been ${newStatus ? 'listed' : 'unlisted'}`);
     } catch (error) {
@@ -151,7 +151,7 @@ export  const handleChangeOrderStatus = async (orderId,selectedStatus,loadOrders
   }
 
   try {
-    const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/admin/update_order_status`, {
+    const response = await ADMIN_API.post(`/admin/update_order_status`, {
       orderId,
       status: newStatus,
     });
@@ -174,7 +174,7 @@ export const handleToggleCategoriesBlock = async (id, currentStatus,loadCategori
 
   showBlockConfirmation(title, newStatus, async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockCategories/${id}`, { status: newStatus });
+      await ADMIN_API.put(`/admin/toggleBlockCategories/${id}`, { status: newStatus });
       loadCategories();
       toast.success(`Category has been ${newStatus ? 'listed' : 'unlisted'}`);
     } catch (error) {
@@ -190,7 +190,7 @@ export const handleBlockProductOffers = async (id, currentStatus,loadProductOffe
 
   showBlockConfirmation(title, newStatus, async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockProductOffers`, { id,status: newStatus });
+      await ADMIN_API.put(`/admin/toggleBlockProductOffers`, { id,status: newStatus });
       loadProductOffers();
       toast.success(`Offer has been ${newStatus ? 'listed' : 'unlisted'}`);
     } catch (error) {
@@ -206,7 +206,7 @@ export const handleBlockCategoryOffers = async (id, currentStatus,loadCategories
 
   showBlockConfirmation(title, newStatus, async () => {
     try {
-      await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/toggleBlockCategoryOffers`, { id,status: newStatus });
+      await ADMIN_API.put(`/admin/toggleBlockCategoryOffers`, { id,status: newStatus });
       loadCategoriesOffers();
       toast.success(`Offer has been ${newStatus ? 'listed' : 'unlisted'}`);
     } catch (error) {

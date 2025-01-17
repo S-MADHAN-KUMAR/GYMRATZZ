@@ -1,8 +1,8 @@
-import axios from "axios";
+import { ADMIN_API } from "../API";
 
 export const fetchProducts = async (setProducts) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_products`);
+      const res = await ADMIN_API.get(`/admin/get_all_products`);
       if (res.status === 200) {
         setProducts(res?.data)
       }
@@ -14,7 +14,7 @@ export const fetchProducts = async (setProducts) => {
 
 export const fetchUsers = async (setUsers) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_users`);
+      const res = await ADMIN_API.get(`/admin/get_all_users`);
       if (res.status === 200) {
         setUsers(res?.data)
       }
@@ -26,7 +26,7 @@ export const fetchUsers = async (setUsers) => {
 
 export const fetchCoupons = async (setCoupons) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_coupons`);
+      const res = await ADMIN_API.get(`/admin/get_all_coupons`);
       if (res.status === 200) {
         setCoupons(res?.data)
       }
@@ -38,7 +38,7 @@ export const fetchCoupons = async (setCoupons) => {
 
 export const fetchBrands = async (setBrands) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_brands`);
+      const res = await ADMIN_API.get(`/admin/get_all_brands`);
       if (res.status === 200) {
         setBrands(res?.data)
       }
@@ -50,7 +50,7 @@ export const fetchBrands = async (setBrands) => {
 
 export const fetchOrders = async (setOrders) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_orders`);
+      const res = await ADMIN_API.get(`/admin/get_all_orders`);
       if (res.status === 200) {
         setOrders(res?.data)
       }
@@ -62,7 +62,7 @@ export const fetchOrders = async (setOrders) => {
 
 export const fetchBanners = async (setBanners) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_banners`);
+      const res = await ADMIN_API.get(`/admin/get_all_banners`);
       if (res.status === 200) {
         setBanners(res?.data)
       }
@@ -74,7 +74,7 @@ export const fetchBanners = async (setBanners) => {
 
 export const fetchCategories = async (setCategories) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_categories`);
+      const res = await ADMIN_API.get(`/admin/get_all_categories`);
       if (res.status === 200) {
         setCategories(res?.data)
       }
@@ -86,7 +86,7 @@ export const fetchCategories = async (setCategories) => {
 
 export const fetchProductOffers = async (setProductOffers) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_product_offer`);
+      const res = await ADMIN_API.get(`/admin/get_all_product_offer`);
       if (res.status === 200) {
         setProductOffers(res?.data)
       }
@@ -98,7 +98,7 @@ export const fetchProductOffers = async (setProductOffers) => {
 
 export const fetchCategoriesOffers = async (setCategoriesOffers) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/admin/get_all_categories_offer`);
+      const res = await ADMIN_API.get(`/admin/get_all_categories_offer`);
       if (res.status === 200) {
         setCategoriesOffers(res?.data)
       }
