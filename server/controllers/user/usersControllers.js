@@ -370,3 +370,36 @@ export const resendOtpForgotPassword = async (req, res) => {
     res.status(500).json({ message: 'Failed to resend OTP for password reset' });
   }
 };
+
+export const updatePassword = async (req, res) => {
+  try {
+    const { password, email } = req.body;
+
+    if (!password || !email) {
+      return res.status(400).json({ message: "Password and email are required" });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: "Password should be at least 6 characters long" });
+    }
+
+    const foundUser = await UserModel.findOne({ email });
+
+    if (!foundUser) {
+      return res.status(404).json({ message: "No user found!" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    foundUser.password = hashedPassword;
+
+    await foundUser.save();
+
+    res.status(200).json({ message: "Password updated successfully!" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error, please try again later" });
+  }
+}
