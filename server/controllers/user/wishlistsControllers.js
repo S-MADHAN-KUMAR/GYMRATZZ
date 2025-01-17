@@ -1,5 +1,5 @@
 import ProductModel from "../../models/productsModel.js";
-import UserModel from "../../models/UserModel.js";
+import UserModel from "../../models/userModel.js";
 import WishlistModel from "../../models/wishlistModel.js";
 
 export const add_to_wishlist = async (req, res) => {

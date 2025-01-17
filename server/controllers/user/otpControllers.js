@@ -1,4 +1,4 @@
-import UserModel from '../../models/UserModel.js';
+import UserModel from '../../models/userModel.js';
 
 export const verify_otp = async (req, res) => {
     try {

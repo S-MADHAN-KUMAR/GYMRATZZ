@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import UserModel from '../../models/UserModel.js';
+import UserModel from '../../models/userModel.js';
 
 export const update_profile = async (req, res) => {
   try {

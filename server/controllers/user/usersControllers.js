@@ -1,4 +1,4 @@
-import UserModel from '../../models/UserModel.js';
+import UserModel from '../../models/userModel.js';
 import transporter from '../../utils/email.js'
 import bcrypt  from 'bcryptjs'
 import { userGenerateToken } from '../../utils/generateToken.js';
