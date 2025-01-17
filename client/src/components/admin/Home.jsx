@@ -18,7 +18,7 @@ import {
     Filler,
     RadialLinearScale
 } from 'chart.js';
-import { ADMIN_API } from '../../api/api';
+import { ADMIN_API } from '../../API/API';
 import { fetchBestSellingBrands, fetchBestSellingCategories, fetchBestSellingProducts, fetchStatistics } from '../../API/admin/dashboardStatistics';
 
 ChartJS.register(

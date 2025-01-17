@@ -15,7 +15,10 @@ const ProtectRoute = ({ children, isProtectedForLoggedIn = false }) => {
       };
       fetchUserData();
     }
-  }, [currentUser]);  
+  }, []);
+
+  console.log(currentUser?._id);
+  
 
   if (isProtectedForLoggedIn) {
     if (currUser?.isVerified) {

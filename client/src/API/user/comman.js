@@ -3,7 +3,7 @@ import { USER_API } from "../API";
 
 export const fetchCurrentUser = async (userId) => {
     try {
-      const id=userId
+      const id= userId
       
       const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/get_current_user/${id}`);
   

@@ -5,6 +5,7 @@ import { showToast } from '../../../helpers/toast';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { USER_API } from '../../../API/API';
 
 const AddAddress = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const AddAddress = () => {
     validationSchema: addressValidation,
     onSubmit: async (values) => {
       try {
-        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/add_address`, values);
+        const response = await USER_API.post(`/user/add_address`, values);
         if (response.status === 200) {
           showToast('Address added successfully!', 'light', 'success');
           navigate('/profile/address');
