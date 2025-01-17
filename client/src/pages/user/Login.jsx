@@ -22,10 +22,15 @@ const Login = () => {
 
       dispatch(LoginStart());
       try {
-        const response = await axios.post(
+       const response = await axios.post(
           `${import.meta.env.VITE_SERVER_URL}/user/login`,
-          values, { withCredentials: true }
-        );
+          values, 
+          {
+            withCredentials: true, // Allow sending cookies with the request
+            headers: {
+              "Content-Type": "application/json", // Set content type to JSON
+            },
+          }
   
         if (response.status === 200) {
           dispatch(LoginSuccess(response?.data?.user));
