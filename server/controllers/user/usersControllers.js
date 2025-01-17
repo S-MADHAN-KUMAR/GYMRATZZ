@@ -104,20 +104,10 @@ export  const verifyOTP = async (req, res) => {
       const updatedUser = await UserModel.findOne({ email });
 
       const token = userGenerateToken(email);
-
-    console.log(token);
-    
-    res.cookie('USER_TOKEN', token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // HTTPS-only in production
-      sameSite: 'Strict', // Strict for security
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-    });
     
 
   
-      res.status(200).json({ message: 'User verified successfully!' , user:updatedUser});
+      res.status(200).json({ message: 'User verified successfully!' , user:updatedUser,token});
     } catch (err) {
       console.error('Error occurred during OTP verification:', err);
       res.status(500).json({ message: 'Internal server error', error: err.message });
@@ -204,21 +194,10 @@ export const loginUser = async (req, res) => {
    
     const token = userGenerateToken(user.email);
 
-    console.log(token);
-    
-    res.cookie('USER_TOKEN', token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // HTTPS-only in production
-      sameSite: 'Strict', // Strict for security
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-    });
-    
-
-
       res.status(200).json({
       message: 'Login successful!',
-      user
+      user,
+      token
     });
    
   } catch (error) {
@@ -253,34 +232,10 @@ export const handle_google_auth = async (req, res) => {
    
     const token = userGenerateToken(email);
 
-    console.log(token);
-    
-    res.cookie('USER_TOKEN', token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'Strict', 
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 
-    });
-   }
-  }
-
-    const token = userGenerateToken(email);
-
-    console.log(token);
-    
-    res.cookie('USER_TOKEN', token, {
-      path: '/',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', 
-      sameSite: 'Strict', 
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 
-    });
-    
-
      res.status(200).json({
       message: isNew ? 'Sign-Up successful' : 'Login successful',
       user,
+         token
     });
   } catch (error) {
     console.error('Error in Google Authentication:', error);
