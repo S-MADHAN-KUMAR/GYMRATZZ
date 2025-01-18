@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-  origin: "https://gymratz-1.onrender.com", // Frontend URL (replace with deployed frontend URL if applicable)
+  origin: process.env.FRONTEND_URL, // Frontend URL (replace with deployed frontend URL if applicable)
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Explicitly specify allowed HTTP methods
   credentials: true, // Allow sending cookies or Authorization headers
   allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
