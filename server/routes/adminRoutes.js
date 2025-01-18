@@ -62,7 +62,7 @@ router.post('/update_order_status',adminAuth,update_order_status)
 
 //=================================[ DashBoard ]===============================//
 
-router.post('/sales_report',adminAuth,sales_report)
+router.post('/sales_report',sales_report)
 
 router.get('/get_sales_statistics',adminAuth,get_sales_statistics)
 
