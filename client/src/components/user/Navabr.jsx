@@ -59,7 +59,12 @@ const Navabr = () => {
         </div>
         {/* PROFILE */}
         <div className="">
-            <div onClick={()=>navigate('/profile/general')} className="flex items-center gap-x-2 cursor-pointer">
+            <div onClick={
+  currentUser 
+    ? () => navigate('/profile/general') 
+    : () => navigate('/profile/login')
+}
+ className="flex items-center gap-x-2 cursor-pointer">
           <h1 className="text-4xl hidden md:block">profile</h1>
           <img   className='w-8 cursor-pointer md:w-12' src={user?.profilePicture ? user?.profilePicture : "https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000"}/>
             </div>
