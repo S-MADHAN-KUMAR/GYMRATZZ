@@ -41,6 +41,10 @@ const Card = ({ product }) => {
 
   const handleAddWishlist = async () => {
     try {
+       if(!currentUser){
+        showToast('Please Login','dark','error')
+        navigate('/login')
+      }
       const payload = {
         userId: currentUser?._id,
         productId: product?._id,
@@ -60,6 +64,10 @@ const Card = ({ product }) => {
 
   const handleAddToCart = async (productId) => {
     try {
+       if(!currentUser){
+        showToast('Please Login','dark','error')
+        navigate('/login')
+      }
       const payload = {
         userId: currentUser?._id,
         productId: productId,
