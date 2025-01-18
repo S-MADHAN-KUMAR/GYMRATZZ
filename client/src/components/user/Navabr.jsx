@@ -24,7 +24,7 @@ const Navabr = () => {
         {/* LOGO */}
        <Link to={'/'}>
        <div className="flex gap-x-1">
-            <img src="public/logo.png" className="w-8 md:w-12" />
+            <img src="/logo.png" className="w-8 md:w-12" />
             <h2 className='h1 tracking-wider text-2xl md:text-5xl text-[#252126]'>GYM RATZ</h2>
         </div>
        </Link>
