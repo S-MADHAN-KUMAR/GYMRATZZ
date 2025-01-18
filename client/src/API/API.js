@@ -21,7 +21,7 @@ const ADMIN_API = axios.create({
 });
 
 ADMIN_API.interceptors.request.use((req) => {
-  const token = Cookies.get('ADMIN_TOKEN');
+  const token = localStorage.getItem('ADMIN_TOKEN');
 
   if (token) {
     req.headers.Authorization = `Bearer ${token}`;
