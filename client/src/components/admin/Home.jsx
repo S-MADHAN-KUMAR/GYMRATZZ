@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ADMIN_API } from '../../API/API';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable'; 
 import * as XLSX from 'xlsx'; 
@@ -92,7 +93,7 @@ const Home = () => {
     try {
       console.log(filters);
 
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/admin/sales_report`, null, {
+      const response = await ADMIN_API.post(`/admin/sales_report`, null, {
         params: {
           startDate: filters.startDate,
           endDate: filters.endDate
