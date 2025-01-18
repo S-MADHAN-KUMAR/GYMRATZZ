@@ -157,16 +157,7 @@ const Dashboard = () => {
               <p className={`${isMenuOpen ? 'black' : "hidden"}`} >Offers</p>
             </div>
           </NavLink>
-{/*           <NavLink
-            to="/dashboard/reviews"
-            className={({ isActive }) =>
-              isActive ? "text-blue-500" : "hover:text-[#b88cff]"
-            }
-          >
-            <div className="flex gap-x-3 items-center">
-              <RiMessage2Fill/>
-              <p className={`${isMenuOpen ? 'black' : "hidden"}`} >Reviews</p></div>
-          </NavLink> */}
+
         </div>
  {/* Logout Button */}
  <button onClick={handleLogout}>
