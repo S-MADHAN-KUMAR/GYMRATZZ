@@ -37,7 +37,7 @@ const Wallet = () => {
     }
   };
 
-
+console.log(currentUser?._id)
   useEffect(() => {
     if (currentUser?._id) {
       fetchWallet(currentUser?._id,setWallet)
