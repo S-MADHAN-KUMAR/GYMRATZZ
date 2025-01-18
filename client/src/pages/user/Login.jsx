@@ -37,6 +37,7 @@ const Login = () => {
   
           // Update Redux state
           dispatch(LoginSuccess(response?.data?.user));
+          navigate('/login')
           showToast('Logged in successfully!', 'light', 'success');
         }
       } catch (error) {
