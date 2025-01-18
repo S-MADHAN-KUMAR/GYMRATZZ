@@ -6,7 +6,7 @@ import { fetchWallet } from '../../../API/user/comman';
 import { showToast } from '../../../helpers/toast';
 import { USER_API } from '../../../API/API';
 
-const stripePromise = loadStripe(import.meta.env.LOAD_STRIPE);
+const stripePromise = loadStripe(import.meta.env.VITE_LOAD_STRIPE);
 
 const Wallet = () => {
   const { currentUser } = useSelector((state) => state.user);
