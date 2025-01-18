@@ -159,11 +159,11 @@ const navigate = useNavigate()
       console.error("Order Placement Error:", error);
       
       if (errorMessage) {
-        alert(errorMessage);
-      } else if (error?.message) {
-        alert(`Error: ${error.message}`);
+        showToast(errorMessage);
+      } else if (error?.message,'dark','error') {
+        showToast(`Error: ${error.message}`,'dark','error');
       } else {
-        alert("Failed to place the order. Please try again.");
+        showToast("Failed to place the order. Please try again.",'dark','error');
       }
       
     }
