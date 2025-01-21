@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { fetchCoupons, fetchUserAddress, fetchUserCart } from "../../API/user/comman";
-import { showToast } from "../../helpers/toast";
-import axios from "axios";
-import { USER_API } from "../../API/API";
+import { calculateCartTotal, calculateCouponDiscountAmt, calculateGrandTotal, loadCart, loadCoupons, loadUserAddresses, placeOrder } from "../../API/user/checkout";
 
 const Checkout = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -14,202 +11,36 @@ const Checkout = () => {
   const [coupons, setCoupons] = useState([]);
   const [cart, setCart] = useState(null);
   const [totalAmt, setTotalAmt] = useState(null);
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
-
-  const loadCart = async () => {
-    try {
-      if (currentUser) {
-        const fetchedCart = await fetchUserCart(currentUser._id);
-        setCart(fetchedCart);
-        setTotalAmt(fetchedCart?.totalAmt)
-      }
-    } catch (err) {
-      console.error(err.message || "Something went wrong.");
-    }
-  };
-
-  const loadUserAddresses = async () => {
-    try {
-       await fetchUserAddress(currentUser._id,setAddresses);
-    } catch (err) {
-      console.error(err.message || "Failed to fetch addresses.");
-    }
-  };
-
-  const loadCoupons = async () => {
-    try {
-      await fetchCoupons(setCoupons);
-    } catch (err) {
-      console.error(err.message || "Failed to fetch coupons.");
-    }
-  };
-
-  const calculateTotalAmount = () => {
-    return cart?.products?.reduce((total, item) => {
-      if (!item) return total;
-  
-      // Extract price and quantity
-      const price = item?.price || 0;
-      const quantity = item?.quantity || 0;
-  
-      // Handle discount calculation if offerDetails exists
-      const discount = item?.offerDetails?.discount || 0;
-      const discountedPrice = price - (price * discount) / 100;
-  
-      // Accumulate total
-      return total + discountedPrice * quantity;
-    }, 0);
-  };
-
-  function calculateCouponDiscountAmt() {
-    return selectedCoupon ? (() => {
-      const selectedCouponData = coupons.find((coupon) => coupon._id === selectedCoupon);
-      if (selectedCouponData && selectedCouponData.discount) {
-        const discount = selectedCouponData.discount;
-        const discountAmount = cartTotalAmt* (discount / 100);
-        
-      
-        
-        if (discountAmount > selectedCouponData?.maxDiscountAmount) {
-          let disTotalAmt = selectedCouponData.maxDiscountAmount
-          return disTotalAmt.toFixed(2);
-        }
-        
-        return  discountAmount.toFixed(2);
-      }
-      
-  
-    })() : 0;
-  }
-  
 
   useEffect(() => {
     if (currentUser?._id) {
-      loadUserAddresses();
-      loadCart();
-      loadCoupons();
+      loadUserAddresses(currentUser, setAddresses);
+      loadCart(currentUser, setCart, setTotalAmt);
+      loadCoupons(setCoupons);
     }
   }, [currentUser]);
+
+  const cartTotalAmt = calculateCartTotal(cart);
 
   const handleCouponSelection = (couponId) => {
     setSelectedCoupon(couponId);
   };
 
   const handlePlaceOrder = async () => {
-    if (!selectedAddress) {
-        showToast("Please select an address.",'dark','error');
-        return;
-    }
-    if (!paymentMethod) {
-        showToast("Please select an payment method.",'dark','error');
-        return;
-    }
-
-    // Check if a coupon is selected
-    const appliedCoupon = selectedCoupon ? coupons.find((coupon) => coupon._id === selectedCoupon) : null;
-    
-    try {
-        const payload = {
-            userId: currentUser?._id,
-
-            products: cart?.products?.map((product) => {
-              if (!product) return null; // Skip invalid or undefined products
-            
-              if (product?.offerDetails) {
-                const discount = product.offerDetails.discount || 0;
-            
-                return {
-                  ...product,
-                  categoryId: product.categoryId, // Explicitly retain categoryId
-                  brandId: product.brandId,     // Explicitly retain brandId
-                  offerAmt: (product.price * discount) / 100, // Calculate discount amount
-                  offerPercentage: discount,                  // Discount percentage
-                  offerID: product.offerDetails._id,          // Offer ID from details
-                };
-              }
-            
-              return product;
-            }) || [],
-            
-            
-            address: selectedAddress,
-            totalAmt:  calculateGrandTotal(),
-            couponOfferPercentage:appliedCoupon ? appliedCoupon.discount : null,
-            couponId: appliedCoupon ? appliedCoupon._id : null,
-            paymentMethod,
-            couponUsed: appliedCoupon ? true : false, 
-            maxDiscountAmount:appliedCoupon ? appliedCoupon.maxDiscountAmount : null,
-            couponDiscountAmt :calculateCouponDiscountAmt(),
-            minDiscountAmount:appliedCoupon ? appliedCoupon.minDiscountAmount : null,
-        };
-
-        const res = await USER_API.post(`/user/place_order`, payload);
-
-        if (res.data.success) {
-            if (res.data.session_url) {
-                window.location.href = res.data.session_url;
-            } else {
-                showToast("Order placed successfully.",'light','success');
-                navigate('/order-success')
-            }
-        }
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message; 
-      console.error("Order Placement Error:", error);
-      
-      if (errorMessage) {
-        showToast(errorMessage);
-      } else if (error?.message,'dark','error') {
-        showToast(`Error: ${error.message}`,'dark','error');
-      } else {
-        showToast("Failed to place the order. Please try again.",'dark','error');
-      }
-      
-    }
-}
-
-function calculateGrandTotal() {
-      
-  const selectedCouponData = coupons.find((coupon) => coupon._id === selectedCoupon);
-
-  const couponDiscount = selectedCouponData && selectedCouponData.discount
-    ? cart?.totalAmt * (selectedCouponData.discount / 100)
-    : 0;
-
-  const appliedDiscount = selectedCouponData && couponDiscount > selectedCouponData.maxDiscountAmount
-    ? selectedCouponData.maxDiscountAmount
-    : couponDiscount;
-
-  // Determine the base total amount
-  const TA = cartTotalAmt || cart?.totalAmt || 0;
-
-  // Get the additional amount from the environment variable
-  const additionalAmt = parseFloat(import.meta.env.VITE_AMT) || 0;
-
-  let totalAmt = (TA - appliedDiscount + additionalAmt).toFixed(2);
-
-  const CouponDisAmt = (() => {
-    const selectedCouponData = coupons.find((coupon) => coupon._id === selectedCoupon);
-    if (selectedCouponData && selectedCouponData.discount) {
-      const discount = selectedCouponData.discount;
-      return cart?.totalAmt * (discount / 100);
-    }
-    return cart?.totalAmt;
-  })();
-
-
-    if (CouponDisAmt > selectedCouponData?.maxDiscountAmount) {
-      totalAmt = ((cartTotalAmt - selectedCouponData.maxDiscountAmount) + additionalAmt).toFixed(2);
-    }
-
-  
-
-  return totalAmt;
-}
-
-const cartTotalAmt = calculateTotalAmount();
-
+    placeOrder(
+      currentUser,
+      cart,
+      selectedAddress,
+      paymentMethod,
+      selectedCoupon,
+      coupons,
+      calculateGrandTotal(calculateCartTotal(cart), calculateCouponDiscountAmt(calculateCartTotal(cart), selectedCoupon, coupons)),
+      calculateCouponDiscountAmt(cartTotalAmt, selectedCoupon, coupons),
+      navigate
+    );
+  };
 
   return (
     <div className="container p-3 flex justify-between">
@@ -377,8 +208,8 @@ const cartTotalAmt = calculateTotalAmount();
                 <h1 className="h1 text-3xl tracking-wider drop-shadow-sm font-medium mb-10 text-left">Payment Method</h1>
                 <div className="space-y-4">
 
-              {
-                 calculateGrandTotal() <= 1000 &&
+                {
+                 calculateGrandTotal(calculateCartTotal(cart), calculateCouponDiscountAmt(calculateCartTotal(cart), selectedCoupon, coupons)) <= 1000 &&
    
   <div className={`flex items-center space-x-4 border rounded-lg  ${paymentMethod === 'Cash on delivery' && 'bg-blue-100'}`}>
     {/* Hidden Radio Buttons */}
@@ -402,6 +233,7 @@ const cartTotalAmt = calculateTotalAmount();
     </label>
   </div>
               } 
+
   <div className={`flex items-center space-x-4 border rounded-lg  ${paymentMethod === 'Wallet' && 'bg-blue-100'}`}>
     {/* Hidden Radio Buttons */}
     <input
@@ -502,14 +334,14 @@ const cartTotalAmt = calculateTotalAmount();
                                     <span className='text-blue-600'> ₹ {cartTotalAmt}</span>
                                 </h3>
                                 <p className="text-sm font-semibold">+ Delivery Charge : <span className='text-red-600'>
-                                     ₹ {import.meta.env.VITE_AMT}
+                                     ₹ {import.meta.env.VITE_DELIVERY_CHARGE}
                                     </span>
                                 </p>
                                 {
                                     selectedCoupon && 
                                     (
                                         <p className="text-sm font-semibold">- coupon applied : <span className='text-green-600'>
-                                        ₹ {calculateCouponDiscountAmt()}
+                                        ₹ {calculateCouponDiscountAmt(calculateCartTotal(cart),selectedCoupon,coupons)}
                                        </span>
                                    </p> 
                                     )
@@ -519,7 +351,8 @@ const cartTotalAmt = calculateTotalAmount();
                                 <p className='text-lg font-semibold border-y my-4 py-4'>
   Grand Total : 
   <span className='text-xl font-semibold ml-2'>
-    ₹ {calculateGrandTotal()}
+  ₹ {calculateGrandTotal(calculateCartTotal(cart), calculateCouponDiscountAmt(calculateCartTotal(cart), selectedCoupon, coupons))}
+
   </span>
 </p>
 

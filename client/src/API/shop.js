@@ -1,9 +1,9 @@
 import axios from 'axios'
-import { USER_API } from './API';
+
 
 export const getAllproducts = async () => {
     try {
-      const res = await USER_API.get(`/user/get_all_products`);
+      const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/get_all_products`);
       if (res.status === 200) {
         return res.data;
       } else {

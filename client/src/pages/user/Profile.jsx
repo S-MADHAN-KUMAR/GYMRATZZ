@@ -1,26 +1,12 @@
 import React from 'react'
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'; 
-import { useDispatch, useSelector } from 'react-redux';
-import { Logout } from '../../redux/user/userSlice';
-import { showBlockConfirmation } from '../../helpers/Sweat';
+import {  useDispatch, useSelector } from 'react-redux';
+import { handleLogout } from '../../API/user/Send.js';
 
 const Profile = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
   const {currentUser}=useSelector((state)=>state.user)
-
-  const handleLogout = async () => {
-    showBlockConfirmation('Do you want to LOGOUT', 'LOGOUT', async () => {
-      try {
-        dispatch(Logout());
-        navigate('/login');
-      } catch (error) {
-        console.error('Error logging out:', error); // Updated log message for clarity
-      }
-    });
-  };
-  
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <div className="w-full h-[90vh] flex">
     <div className=" h1 tracking-widest bg-black text-xl flex flex-col items-center justify-evenly w-[25vw] h-[90vh] overflow-y-hidden">
@@ -53,13 +39,12 @@ const Profile = () => {
 {
   currentUser
   ?
-  <button 
-  onClick={handleLogout} 
+<button 
+  onClick={() => handleLogout(dispatch, navigate)} 
   className="button mt-4"
-  >
+>
   <span>Logout</span>
-  
-  </button>
+</button>
   :
   <button 
   onClick={()=>navigate('/login')} 

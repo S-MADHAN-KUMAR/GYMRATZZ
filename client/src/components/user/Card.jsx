@@ -4,12 +4,12 @@ import {
   MdOutlineStarOutline,
   MdOutlineStarHalf,
 } from "react-icons/md";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { showToast } from "../../helpers/toast";
-import { fetchCurrentUser, fetchUserCart } from "../../API/user/comman";
+import { fetchCurrentUser } from "../../API/user/comman";
 import { USER_API } from "../../API/API";
+import { fetchUserCart } from "../../API/user/cart";
 
 const Card = ({ product }) => {
   const [user, setUser] = useState(null);

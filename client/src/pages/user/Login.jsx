@@ -4,49 +4,23 @@ import { useFormik } from 'formik';
 import { loginValidationSchema } from '../../validations/userValidations.js';
 import { Link ,useNavigate } from 'react-router-dom';
 import GoogleAuthBtn from '../../components/user/GoogleAuthBtn.jsx';
-import axios from 'axios';
 import ForgotPasswordEmail from '../../components/user/ForgotPasswordEmail.jsx';
 import { useDispatch } from 'react-redux';
-import { LoginFailure, LoginStart, LoginSuccess } from '../../redux/user/userSlice.js';
+import { handleLoginSubmit } from '../../API/user/Send.js';
 
 const Login = () => {
   const [IsOpenEmailPopup, setIsOpenEmailPopup] = useState(false);
   const dispatch = useDispatch();
-   const navigate = useNavigate()
-   const formik = useFormik({
+  const navigate = useNavigate();
+
+  const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
     validationSchema: loginValidationSchema,
-    onSubmit: async (values) => {
-      dispatch(LoginStart());
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/user/login`,
-          values,
-          { withCredentials: true } // Make sure to update this if you plan to use `localStorage` instead of cookies
-        );
-  
-        if (response.status === 200) {
-          // Store token in localStorage
-          localStorage.setItem('USER_TOKEN', response?.data?.token);
-  
-          // Optionally store other user details in localStorage
-          localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
-  
-          // Update Redux state
-          dispatch(LoginSuccess(response?.data?.user));
-          navigate('/login')
-          showToast('Logged in successfully!', 'light', 'success');
-        }
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || 'An unexpected error occurred!';
-        dispatch(LoginFailure(errorMessage));
-        console.error('Error during login:', error);
-        showToast(errorMessage, 'dark', 'error');
-      }
+    onSubmit: (values) => {
+      handleLoginSubmit(values, dispatch, navigate);
     },
   });
 

@@ -1,27 +1,28 @@
 import jwt from 'jsonwebtoken';
 
 export const userAuth = (req, res, next) => {
-  // Extract the token from the Authorization header
-  const token = req.headers.authorization?.split(' ')[1];  // 'Bearer <token>'
-
-  console.log('Token extracted:', token);
+  // Get token from Authorization header
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1]; // 'Bearer <token>'
 
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized: Token not found' });
   }
 
-  // Verify the JWT token
+  console.log(token);
+  
+
   jwt.verify(token, process.env.USER_JWT_SECRET, (err, decoded) => {
     if (err) {
-      if (err.name === 'TokenExpiredError') {
-        return res.status(403).json({ message: 'Forbidden: Token expired' });
-      }
-      return res.status(403).json({ message: 'Forbidden: Invalid token' });
+      const message =
+        err.name === 'TokenExpiredError'
+          ? 'Forbidden: Token expired'
+          : 'Forbidden: Invalid token';
+      return res.status(403).json({ message });
     }
 
-    // Token is valid, attach decoded user info to the request object
+    // Attach user info to the request object
     req.user = decoded;
-
     next();
   });
 };

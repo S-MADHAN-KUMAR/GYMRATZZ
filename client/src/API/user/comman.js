@@ -47,37 +47,6 @@ export const fetchEditAddress = async (setAddress,data) => {
     }
   }
 
-export const fetchUserWishlist = async (userId,setWishlists) => {
-    try {
-      const id=userId
-      
-      const res = await USER_API.get(`/user/get_user_wishlist/${id}`);
-  
-      if (res.status === 200) {
-        setWishlists(res?.data)
-      }
-    } catch (error) {
-      console.error('Error in fetchCurrUser:', error.message);
-      return null; 
-    }
-  }
-
-  export const fetchUserCart = async (id,showToast) => {
-    try {
-      if (!id) {
-        throw new Error('User ID is missing.');
-      }
-  
-      const res = await USER_API.get(`/user/get_user_cart/${id}`);
-      if (res.status === 200) {
-        return res?.data || []
-      } else if (res.status === 403){
-        showToast(res.data.message,'dark','error')
-      }
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
 
   export const fetchCoupons = async (setCoupons) => {
     try {

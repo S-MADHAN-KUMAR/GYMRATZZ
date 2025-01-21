@@ -9,6 +9,7 @@ const Navabr = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState(null);
     const { currentUser } = useSelector((state) => state.user);
+    const token = localStorage.getItem('USER_TOKEN'); 
     const loadUser = async () => {
       const fetchUserData = await fetchCurrentUser(currentUser?._id);
       setUser(fetchUserData);
@@ -91,6 +92,9 @@ const Navabr = () => {
             <a href="#contact" className="hover:text-red-500 transition-colors drop-shadow-sm">
               Contact
             </a>
+           {
+            !currentUser?.isVerified && !token
+            &&
             <div className="flex gap-x-4">
             <a href="login" className="hover:text-red-500 transition-colors drop-shadow-sm">
               Login
@@ -100,6 +104,7 @@ const Navabr = () => {
               Register
             </a>
             </div>
+           }
           </div>
     </>
 }

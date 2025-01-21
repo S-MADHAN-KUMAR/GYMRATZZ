@@ -2,17 +2,21 @@ import axios from 'axios';
 
 const USER_API = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
-  withCredentials: true,
+  withCredentials: true, 
 });
 
 USER_API.interceptors.request.use((req) => {
-  const token = localStorage.getItem('USER_TOKEN') ; 
+  const token = localStorage.getItem('USER_TOKEN');  
   
   if (token) {
     req.headers.Authorization = `Bearer ${token}`; 
   }
+
   return req;
+}, (error) => {
+  return Promise.reject(error);
 });
+
 
 
 const ADMIN_API = axios.create({

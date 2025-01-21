@@ -14,10 +14,10 @@ app.use(express.json())
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // Frontend URL (replace with deployed frontend URL if applicable)
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"], // Explicitly specify allowed HTTP methods
-  credentials: true, // Allow sending cookies or Authorization headers
-  allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
+  origin: process.env.FRONTEND_URL, 
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  credentials: true, 
+  allowedHeaders: ["Content-Type", "Authorization"], 
 }));
 //======================config=========================//
 

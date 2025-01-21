@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchUserCart, fetchUserWishlist } from "../../API/user/comman";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { fetchUserWishlist, handleAddToCart, handleRemoveProduct } from "../../API/user/wishlistAPI";
+import { fetchUserCart } from "../../API/user/cart";
 import { showToast } from "../../helpers/toast";
 import { USER_API } from "../../API/API";
 
@@ -34,47 +35,6 @@ const Wishlist = () => {
     loadCart();
   }, []);
 
-  const handleAddToCart = async (productId) => {
-    try {
-      const payload = {
-        userId: currentUser?._id,
-        productId: productId,
-      };
-
-      const res = await USER_API.post(
-        `/user/add_to_cart`,
-        payload
-      );
-
-      if (res.status === 200) {
-        setAdded((prev) => ({ ...prev, [productId]: true }));
-        showToast("Products added to cart!", "light", "success");
-      } else {
-        console.error("Failed to add product to cart:", res.data.message);
-      }
-    } catch (error) {
-      console.error("Error adding to cart:", error.message);
-    }
-  };
-
-  const handleRemoveProduct = async (productId) => {
-    try {
-      const payload = {
-        userId: currentUser?._id,
-        productId,
-      };
-      const res = await USER_API.post(
-        `/user/remove_wishlist_product`,
-        payload
-      );
-      if (res.status === 200) {
-        showToast(res?.data?.message, "light", "success");
-        loadWishlist();
-      }
-    } catch (error) {
-      console.error("Error removing product from wishlist:", error);
-    }
-  };
 
   const findMaxStock = (productId) => {
     const cartProduct = cart?.products.find(
@@ -172,7 +132,7 @@ const Wishlist = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleAddToCart(product.productId)}
+                      onClick={() => handleAddToCart(userId,product.productId,setAdded)}
                       className="bg-black w-full justify-center shadow cursor-pointer duration-500 rounded-lg text-white text-xs px-2 py-2 sm:text-sm tracking-widest sm:px-3 sm:py-2 flex items-center sm:gap-x-2 hover:scale-105 "
                     >
                       <img
@@ -187,7 +147,7 @@ const Wishlist = () => {
               </div>
 
               <img
-                onClick={() => handleRemoveProduct(product?.productId)}
+                onClick={() => handleRemoveProduct(userId,product?.productId,loadWishlist)}
                 src="https://img.icons8.com/?size=100&id=faXHmzlIKEVi&format=png&color=000000"
                 className="absolute w-7 top-2 right-2 hover:scale-105 cursor-pointer"
                 alt="Remove from wishlist"

@@ -87,7 +87,7 @@ router.post('/add_to_cart',userAuth, add_to_cart);
 
 // //=================================[ Wishlist ]===============================//
 
-router.post('/remove_wishlist_product',userAuth,remove_wishlist_product)
+router.put('/remove_wishlist_product',userAuth,remove_wishlist_product)
 
 router.post('/add_to_wishlist',userAuth,add_to_wishlist)
 

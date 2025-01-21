@@ -4,7 +4,7 @@ import { MdOutlineStarPurple500 ,MdOutlineStarOutline ,MdOutlineStarHalf  } from
 import { fetchProductDetail } from '../../API/productDetail.js';
 import { SiTicktick } from "react-icons/si";
 import { CgUnavailable } from "react-icons/cg";
-import { fetchUserCart } from '../../API/user/comman.js';
+import { fetchUserCart } from '../../API/user/cart.js';
 import { showToast } from '../../helpers/toast.js';
 import { useSelector } from "react-redux";
 import axios from 'axios';
