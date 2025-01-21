@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { fetchUserWishlist, handleAddToCart, handleRemoveProduct } from "../../API/user/wishlistAPI";
-import { fetchUserCart } from "../../API/user/cart";
+import { fetchUserWishlist, handleRemoveProduct } from "../../API/user/wishlistAPI";
+import { fetchUserCart, handleAddToCart } from "../../API/user/cart";
 import { showToast } from "../../helpers/toast";
-import { USER_API } from "../../API/API";
 
 const Wishlist = () => {
   const [wishlists, setWishlists] = useState([]);
@@ -32,7 +30,6 @@ const Wishlist = () => {
 
   useEffect(() => {
     loadWishlist();
-    loadCart();
   }, []);
 
 

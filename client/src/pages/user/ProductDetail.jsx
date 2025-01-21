@@ -4,10 +4,9 @@ import { MdOutlineStarPurple500 ,MdOutlineStarOutline ,MdOutlineStarHalf  } from
 import { fetchProductDetail } from '../../API/productDetail.js';
 import { SiTicktick } from "react-icons/si";
 import { CgUnavailable } from "react-icons/cg";
-import { fetchUserCart } from '../../API/user/cart.js';
+import { fetchUserCart, handleAddToCart } from '../../API/user/cart.js';
 import { showToast } from '../../helpers/toast.js';
 import { useSelector } from "react-redux";
-import axios from 'axios';
 import RelatedProducts from '../../components/user/RelatedProducts.jsx';
 
 const ProductDetail = () => {
@@ -22,6 +21,7 @@ const ProductDetail = () => {
     const [cart, setCart] = useState(null);
     const [added, setAdded] = useState(false);
     const navigate = useNavigate()
+    const userId = currentUser?._id
 
     const imgRef = useRef(null);
 
@@ -58,11 +58,7 @@ const ProductDetail = () => {
        await fetchProductDetail(setProduct, setMainImage, setImages, id)
      }
      loadProductDetail()
-     loadCart()
     },[])
-
-    console.log(product);
-    
 
     const findMaxStock = (productId) => {
       const cartProduct = cart?.products.find(
@@ -77,28 +73,6 @@ const ProductDetail = () => {
       findMaxStock(product?._id) >= 5 ||
       product?.stock - findMaxStock(product?._id) <= 2;
 
-    const handleAddToCart = async (productId) => {
-      try {
-        const payload = {
-          userId: currentUser?._id,
-          productId: productId,
-        };
-  
-        const res = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/user/add_to_cart`,
-          payload
-        );
-  
-        if (res.status === 200) {
-          setAdded(true);
-          showToast("Products added to cart!", "light", "success");
-        } else {
-          console.error("Failed to add product to cart:", res.data.message);
-        }
-      } catch (error) {
-        console.error("Error adding to cart:", error.message);
-      }
-    };
     
 
   return (
@@ -235,7 +209,7 @@ const ProductDetail = () => {
             </button>
           ) : (
             <button
-              onClick={()=>handleAddToCart(product?._id)}
+              onClick={()=>handleAddToCart(userId,product?._id,setAdded)}
               className="bg-black rounded text-white w-fit px-8 py-3 "
             >
                   <p className="pop uppercase text-xl font-semibold tracking-wider">Add to cart</p>

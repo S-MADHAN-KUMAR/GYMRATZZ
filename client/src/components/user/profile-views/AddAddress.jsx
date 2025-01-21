@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { USER_API } from '../../../API/API';
+import { addAddress } from '../../../API/user/addressAPI';
 
 const AddAddress = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const AddAddress = () => {
     validationSchema: addressValidation,
     onSubmit: async (values) => {
       try {
-        const response = await USER_API.post(`/user/add_address`, values);
+        const response = await addAddress(values)
         if (response.status === 200) {
           showToast('Address added successfully!', 'light', 'success');
           navigate('/profile/address');
@@ -39,7 +40,7 @@ const AddAddress = () => {
   });
 
   const handleCancel = () => {
-    navigate('/profile/address'); // You can adjust this based on your requirements
+    navigate('/profile/address');
   };
 
   return (

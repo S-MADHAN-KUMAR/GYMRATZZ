@@ -63,7 +63,7 @@ const Navabr = () => {
             <div onClick={
   currentUser 
     ? () => navigate('/profile/general') 
-    : () => navigate('/profile/login')
+    : () => navigate('/login')
 }
  className="flex items-center gap-x-2 cursor-pointer">
           <h1 className="text-4xl hidden md:block">profile</h1>

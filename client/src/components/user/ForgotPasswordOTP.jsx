@@ -1,17 +1,16 @@
+// components/ForgotPasswordOTP.js
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import NewPasswordPopup from './NewPasswordPopup';
+import { passwordResendOtp, passwordVerifyOtp } from '../../API/user/auth';
 
-const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
-  const [IsOpenNewPopup,setIsOpenNewPopup] = useState(false)
+const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast, email }) => {
+  const [IsOpenNewPopup, setIsOpenNewPopup] = useState(false);
   const [otp, setOtp] = useState(new Array(6).fill(''));
   const [err, setErr] = useState('');
   const [resendDisabled, setResendDisabled] = useState(false);
-  const [timer, setTimer] = useState(0); 
-  const navigate = useNavigate()
-
-
+  const [timer, setTimer] = useState(0);
+  const navigate = useNavigate();
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -34,7 +33,7 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErr(''); 
+    setErr('');
     const otpValue = otp.join('');
     if (otpValue.length !== 6) {
       setErr('Please enter a valid 6-digit OTP');
@@ -42,24 +41,15 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
     }
 
 
-    const formdata = {
-      email: email,
-      otp: otpValue,
-    };
-
-    console.log('>>>>>>',formdata);
-    
-
     try {
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/verifyForgotPassword`, formdata);
+      const response = await passwordVerifyOtp(email, otpValue);
 
       if (response.status === 200) {
-        showToast('OTP verified successfully!','light', 'success');
-        setIsOpenNewPopup(true); 
+        showToast('OTP verified successfully!', 'light', 'success');
+        setIsOpenNewPopup(true);
       }
     } catch (error) {
-      setErr(error.response?.data?.message || 'Failed to verify OTP');5
-     
+      setErr(error.response?.data?.message || 'Failed to verify OTP');
       setResendDisabled(false);
       setTimer(0);
     }
@@ -72,10 +62,10 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
       setResendDisabled(true);
       setTimer(60);
       setOtp(new Array(6).fill(''));
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/resendOtpForgotPassword`, { email });
+      const response = await passwordResendOtp(email); // Use the service here
 
       if (response.status === 200) {
-        showToast('OTP resent successfully!', 'light','success');
+        showToast('OTP resent successfully!', 'light', 'success');
       }
     } catch (error) {
       setErr(error.response?.data?.message || 'Failed to resend OTP');
@@ -93,7 +83,7 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
       setResendDisabled(false);
     }
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [resendDisabled, timer]);
 
   return (
@@ -102,12 +92,8 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
         onSubmit={handleSubmit}
         className="relative flex flex-col text-center bg-white rounded-md w-2/5 h-2/3"
       >
-      
-
         <div className="flex flex-col p-12 h-full justify-between">
-          <h1 className="text-4xl  tracking-wider w-full">
-            Enter OTP
-          </h1>
+          <h1 className="text-4xl tracking-wider w-full">Enter OTP</h1>
           <div className="mt-10 flex justify-center gap-2">
             {otp.map((digit, index) => (
               <input
@@ -117,7 +103,7 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
                 value={digit}
                 onChange={(e) => handleChange(e.target, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
-                className={`border-2 pop border-gray-800 text-center text-xl font-medium  placeholder:text-sm w-16 h-16 rounded-md  ${
+                className={`border-2 pop border-gray-800 text-center text-xl font-medium placeholder:text-sm w-16 h-16 rounded-md ${
                   resendDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
                 }`}
               />
@@ -134,30 +120,24 @@ const ForgotPasswordOTP = ({ setIsOpenOtpPopup, showToast ,email }) => {
           >
             {resendDisabled ? `Resend OTP in ${timer}s` : 'Resend OTP'}
           </button>
-        <div className="flex justify-between items-center  pop">
-       
-            {/* Close Button */}
-        <button
-          type="button"
-          onClick={() => setIsOpenOtpPopup(false)}
-          className="bg-red-700 text-white p-3 font-semibold w-1/3 rounded-md"
-        >
-         <span> Back</span>
-        </button>
-        <button
-            type="submit"
-            className="bg-green-700 text-white p-3 font-semibold w-1/3 rounded-md"
-          >
-            Submit
-          </button>
-        </div>
-
-         
+          <div className="flex justify-between items-center pop">
+            <button
+              type="button"
+              onClick={() => setIsOpenOtpPopup(false)}
+              className="bg-red-700 text-white p-3 font-semibold w-1/3 rounded-md"
+            >
+              <span>Back</span>
+            </button>
+            <button
+              type="submit"
+              className="bg-green-700 text-white p-3 font-semibold w-1/3 rounded-md"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
-      {
-        IsOpenNewPopup ? <NewPasswordPopup setIsOpenNewPopup={setIsOpenNewPopup} email={email} showToast={showToast} /> : ""
-      }
+      {IsOpenNewPopup ? <NewPasswordPopup setIsOpenNewPopup={setIsOpenNewPopup} email={email} showToast={showToast} /> : ""}
     </div>
   );
 };

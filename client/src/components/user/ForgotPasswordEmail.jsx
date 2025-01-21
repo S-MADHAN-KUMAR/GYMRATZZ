@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import ForgotPasswordOTP from "./ForgotPasswordOTP";
+import { forgotPasswordEmail } from "../../API/user/auth";
 
 const ForgotPasswordEmail = ({ setIsOpenEmailPopup, showToast }) => {
   const [email, setEmail] = useState("");
@@ -12,8 +12,6 @@ const ForgotPasswordEmail = ({ setIsOpenEmailPopup, showToast }) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    console.log(email);
-
     if (!email) {
       setError("Email field cannot be empty.");
     } else if (!emailRegex.test(email)) {
@@ -21,9 +19,7 @@ const ForgotPasswordEmail = ({ setIsOpenEmailPopup, showToast }) => {
     } else {
       setError(""); 
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/user/forgotPassword/${email}`
-        );
+        const res = await forgotPasswordEmail(email); 
 
         if (res.status === 200) {
           console.log(res.data.message);
@@ -67,26 +63,26 @@ const ForgotPasswordEmail = ({ setIsOpenEmailPopup, showToast }) => {
               <span className="text-red-600 text-sm mt-2">{error}</span>
             )}
 
-
           <div className="flex justify-between items-center w-full ">
-          <button className="bg-red-700 text-white p-3 font-semibold w-1/3 rounded-md" onClick={()=>setIsOpenEmailPopup(false)} >
+            <button 
+              className="bg-red-700 text-white p-3 font-semibold w-1/3 rounded-md" 
+              onClick={() => setIsOpenEmailPopup(false)}
+            >
               <span> back</span>
             </button>
-            <button type="submit"  className="bg-blue-700 text-white p-3 font-semibold w-1/3 rounded-md" > 
+            <button type="submit" className="bg-blue-700 text-white p-3 font-semibold w-1/3 rounded-md"> 
               <span> Next</span>
             </button>
           </div>
         </div>
       </form>
 
-      {IsOpenOtpPopup ? (
+      {IsOpenOtpPopup && (
         <ForgotPasswordOTP
-        setIsOpenOtpPopup={setIsOpenOtpPopup}
+          setIsOpenOtpPopup={setIsOpenOtpPopup}
           showToast={showToast}
           email={email}
         />
-      ) : (
-        ""
       )}
     </div>
   );

@@ -57,7 +57,7 @@ router.get('/get_all_categories',get_all_categories)
 
 router.post('/add_wallet_amount',userAuth,add_wallet_amount);
 
-router.post('/get_user_wallet',userAuth,get_user_wallet)
+router.get('/get_user_wallet/:id',userAuth,get_user_wallet)
 
 router.get('/handle_successful_payment/:id',userAuth,handle_successful_payment)
 

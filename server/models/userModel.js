@@ -9,6 +9,8 @@ const UserSchema = new mongoose.Schema({
   profilePicture: { type: String },
   otp: { type: Number }, 
   otpExpiry: { type: Date },
+  forgotOtp: { type: Number }, 
+  forgotOtpExpiry: { type: Date },
   isVerified: { type: Boolean, default: false },
   wishlist:[{
     productId:{type:mongoose.Schema.Types.ObjectId}

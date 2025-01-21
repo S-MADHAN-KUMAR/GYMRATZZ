@@ -48,6 +48,7 @@ import Contact from "./pages/user/Contact";
 import AdminLogin from "./pages/admin/AdminLoagin";
 import AdminProtectPage from "./pages/admin/AdminProtectPage";
 import WalletSuccess from "./components/user/WalletSuccess";
+import WalletFailure from "./components/user/WalletFailure";
 
 const UserLayout = ({ children }) => (
   <>
@@ -97,6 +98,7 @@ const App = () => {
 <Route path="/order-success" element={<OrderSuccess />} />
 <Route path="/order-failure" element={<OrderFailure />} />
 <Route path="wallet_success" element={<WalletSuccess />} />
+<Route path="wallet_failure" element={<WalletFailure />} />
 
 <Route path="admin_login" element={<AdminProtectPage ><AdminLogin /></AdminProtectPage>} />
 

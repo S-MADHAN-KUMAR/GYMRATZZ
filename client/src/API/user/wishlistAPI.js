@@ -14,29 +14,6 @@ export const fetchUserWishlist = async (id, setWishlists) => {
   }
 };
 
-export  const handleAddToCart = async (userId,productId,setAdded) => {
-    try {
-      const payload = {
-        userId,
-        productId: productId,
-      };
-
-      const res = await USER_API.post(
-        `/user/add_to_cart`,
-        payload
-      );
-
-      if (res.status === 200) {
-        setAdded((prev) => ({ ...prev, [productId]: true }));
-        showToast("Products added to cart!", "light", "success");
-      } else {
-        console.error("Failed to add product to cart:", res.data.message);
-      }
-    } catch (error) {
-      console.error("Error adding to cart:", error.message);
-    }
-  };
-
 export  const handleRemoveProduct = async (userId,productId,loadWishlist) => {
     try {
       const payload = {
@@ -53,5 +30,28 @@ export  const handleRemoveProduct = async (userId,productId,loadWishlist) => {
       }
     } catch (error) {
       console.error("Error removing product from wishlist:", error);
+    }
+  };
+
+export const handleAddWishlist = async (userId,productId,navigate) => {
+    try {
+       if(!userId){
+        showToast('Please Login','dark','error')
+        navigate('/login')
+      }
+      const payload = {
+        userId,
+        productId
+      };
+      const res = await USER_API.post(
+        `/user/add_to_wishlist`,
+        payload
+      );
+
+      if (res.status === 200) {
+        showToast("Product Added to Wishlist!", "dark", "success");
+      }
+    } catch (error) {
+      console.error("Error adding to wishlist:", error.message);
     }
   };

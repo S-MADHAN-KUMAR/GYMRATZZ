@@ -1,9 +1,10 @@
+// components/NewPasswordPopup.js
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { updatePassword } from "../../API/user/auth";
 
 const NewPasswordPopup = ({ setIsOpenNewPopup, showToast, email }) => {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -45,15 +46,11 @@ const NewPasswordPopup = ({ setIsOpenNewPopup, showToast, email }) => {
 
     if (validateForm()) {
       try {
-        const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/updatePassword`, {
-          password: formData.password,
-          email: email,
-        });
-
+        const res = await updatePassword(email, formData.password); // Use the service here
         if (res.status === 200) {
           showToast("Password updated successfully!");
-          setFormData({ password: "", confirmPassword: "" })
-         navigate('/login')
+          setFormData({ password: "", confirmPassword: "" });
+          navigate('/');
         }
       } catch (error) {
         console.error("Error updating password:", error);
@@ -69,11 +66,11 @@ const NewPasswordPopup = ({ setIsOpenNewPopup, showToast, email }) => {
         className="relative flex flex-col text-center bg-white rounded-md w-2/5 h-2/3 "
       >
         <div className="flex flex-col p-10 h-full justify-between">
-          <h1 className="text-3xl  uppercase tracking-wider w-full">
+          <h1 className="text-3xl uppercase tracking-wider w-full">
             Enter Your New Password
           </h1>
-    
-<input
+
+          <input
             type="password"
             placeholder="New Password"
             value={formData.password}

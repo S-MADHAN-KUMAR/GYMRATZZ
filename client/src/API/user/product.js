@@ -1,4 +1,5 @@
-// utils/fetchProductDetail.js
+import { fetchUserCart } from '../API/user/comman';
+import { showToast } from '../helpers/toast';
 import axios from 'axios';
 
 export const fetchProductDetail = async (setProduct, setMainImage, setImages, id) => {
@@ -13,10 +14,6 @@ export const fetchProductDetail = async (setProduct, setMainImage, setImages, id
   }
 };
 
-// utils/loadCart.js
-import { fetchUserCart } from '../API/user/comman';
-import { showToast } from '../helpers/toast';
-
 export const loadCart = async (currentUser, setCart) => {
   try {
     if (currentUser) {
@@ -28,7 +25,6 @@ export const loadCart = async (currentUser, setCart) => {
   }
 };
 
-// utils/findMaxStock.js
 export const findMaxStock = (cart, productId) => {
   const cartProduct = cart?.products.find(
     (product) => product.productId === productId
@@ -36,7 +32,6 @@ export const findMaxStock = (cart, productId) => {
   return cartProduct ? cartProduct.quantity : 0;
 };
 
-// utils/handleAddToCart.js
 export const handleAddToCart = async (currentUser, productId, setAdded, showToast) => {
   try {
     const payload = {

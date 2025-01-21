@@ -1,44 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
 import jsPDF from 'jspdf'
 import 'jspdf-autotable'
 import { fetchOrderDetail } from '../../../API/user/comman'
-import { showToast } from '../../../helpers/toast'
-import { USER_API } from '../../../API/API'
+import { handleOrderCancel, handleOrderReturn } from '../../../API/user/orderAPI'
 
 const OrderDetails = () => {
   const { id } = useParams()
 
   const [order, setOrders] = useState(null)
 
-  useEffect(() => {
+  const loadOrderDetails=async()=>{
     fetchOrderDetail(id,setOrders)
+  }
+  useEffect(() => {
+    loadOrderDetails()
   }, [id])
-
-  const handleOrderCancel = async () => {
-    try {
-      const res = await USER_API.get(`/user/order_cancel/${id}`)
-      if (res.status === 200) {
-        showToast(res?.data?.message,'light','success')
-        fetchOrderDetail(id,setOrders)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  const handleOrderReturn = async () => {
-    try {
-      const res = await USER_API.get(`/user/order_return/${id}`)
-      if (res.status === 200) {
-        showToast(res?.data?.message,'light','success')
-        fetchOrderDetail() 
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   const downloadInvoice = async () => {
     if (!order) return;
@@ -201,14 +178,14 @@ const OrderDetails = () => {
           {order.status !== 'Cancelled' && order.status !== 'Payment Failed' && order.status !== 'Returned' ? (
   order.status !== 'Delivered' ? (
     <button
-      onClick={handleOrderCancel}
+      onClick={()=>handleOrderCancel(id,loadOrderDetails)}
       className="w-full md:w-48 px-6 py-3 mt-6 bg-red-600 text-white font-medium rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all"
     >
       Cancel Order
     </button>
   ) : (
     <button
-      onClick={handleOrderReturn}
+      onClick={()=>handleOrderReturn(id,loadOrderDetails)}
       className="w-full md:w-48 px-6 py-3 mt-6 bg-red-600 text-white font-medium rounded-full hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 transition-all"
     >
       Return Order

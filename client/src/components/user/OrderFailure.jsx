@@ -1,7 +1,7 @@
+// components/OrderFailure.js
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios"; // Ensure axios is imported
-// import { USER_API } from "../../api/api";
+import { handleFailedPayment } from "../../API/user/orderAPI"; // Import the service
 
 const OrderFailure = () => {
   const location = useLocation();
@@ -16,7 +16,7 @@ const OrderFailure = () => {
       }
 
       try {
-        const res = await axios.get(`${import.meta.env.VITE_SERVER_URL}/user/handle_failed_payment/${id}`);
+        const res = await handleFailedPayment(id); // Use the service here
         if (res.status === 200) {
           console.log("Payment failure handled successfully.");
           success(); // Trigger the success animation

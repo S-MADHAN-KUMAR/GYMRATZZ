@@ -254,7 +254,7 @@ export const get_current_user = async (req, res) => {
 
 // Forgot Password
 export const forgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const { email } = req.params;
 
   try {
     const user = await UserModel.findOne({ email });
@@ -295,36 +295,38 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-// Verify Forgot Password OTP
 export const verifyForgotPassword = async (req, res) => {
-  const { email, otp, newPassword } = req.body;
-
   try {
-    const user = await UserModel.findOne({ email });
+    const { email, otp } = req.body;
+
+    const user = await UserModel.findOne({ email: email });
 
     if (!user) {
       return res.status(404).json({ message: 'User not found!' });
     }
 
+   
     if (user.forgotOtp !== Number(otp)) {
-      return res.status(400).json({ message: 'Invalid OTP!' });
+      return res.status(400).json({ message: 'Invalid OTP! Try again.' });
     }
 
+  
     if (user.forgotOtpExpiry < Date.now()) {
-      return res.status(400).json({ message: 'OTP has expired!' });
+      await UserModel.updateOne({ email },{otp: null, otpExpiry: null}); 
+      return res.status(400).json({ message: 'OTP has expired! Try again !.' });
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    
+    await UserModel.updateOne(
+      { email },
+      { forgotOtp: null, forgotOtpExpiry: null, isVerified: true }
+    );
 
-    user.password = hashedPassword;
-    user.forgotOtp = null;
-    user.forgotOtpExpiry = null;
-    await user.save();
 
-    res.status(200).json({ message: 'Password reset successful!' });
+    res.status(200).json({ message: 'Please Change your password!' });
   } catch (err) {
-    console.error('Error in Verify Forgot Password:', err);
-    res.status(500).json({ message: 'Error resetting password' });
+    console.error('Error occurred during OTP verification:', err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 };
 

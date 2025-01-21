@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { RegisterSuccess } from '../../redux/user/userSlice.js';
+import { resendOtpApi, verifyOtpApi } from '../../API/user/otpAPI.js';
 
-const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
+const RegisterOTP = ({ setIsOpenPopup, showToast }) => {
   const { currentUser } = useSelector((state) => state.user);
-  
   const [otp, setOtp] = useState(new Array(6).fill(''));
   const [err, setErr] = useState('');
   const [resendDisabled, setResendDisabled] = useState(false);
-  const [timer, setTimer] = useState(0); 
-  const navigate = useNavigate()
-
-  const dispatch = useDispatch()
-
-
+  const [timer, setTimer] = useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (element, index) => {
     const value = element.value;
@@ -38,37 +34,26 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErr(''); 
+    setErr('');
     const otpValue = otp.join('');
     if (otpValue.length !== 6) {
       setErr('Please enter a valid 6-digit OTP');
       return;
     }
 
-
-    const formdata = {
-      email: currentUser?.email,
-      otp: otpValue,
-    }
-  
     try {
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/verify`, formdata, { withCredentials: true });
-
+      const response = await verifyOtpApi(currentUser?.email, otpValue);
       if (response.status === 200) {
-        // Store token in localStorage
-          localStorage.setItem('USER_TOKEN', response?.data?.token);
-  
-          // Optionally store other user details in localStorage
-          localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
-  
-        showToast('OTP verified successfully!','light', 'success');
-        setIsOpenPopup(false)
-        dispatch(RegisterSuccess(response?.data?.user))
-        navigate('/')
+        localStorage.setItem('USER_TOKEN', response?.data?.token);
+        localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
+
+        showToast('OTP verified successfully!', 'light', 'success');
+        setIsOpenPopup(false);
+        dispatch(RegisterSuccess(response?.data?.user));
+        navigate('/');
       }
     } catch (error) {
-      setErr(error.response?.data?.message || 'Failed to verify OTP');5
-     
+      setErr(error.response?.data?.message || 'Failed to verify OTP');
       setResendDisabled(false);
       setTimer(0);
     }
@@ -76,15 +61,14 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
 
   const handleResendOtp = async () => {
     setErr('');
-
     try {
       setResendDisabled(true);
       setTimer(60);
       setOtp(new Array(6).fill(''));
-      const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/user/resendOtp`, { email: currentUser?.email });
+      const response = await resendOtpApi(currentUser?.email);
 
       if (response.status === 200) {
-        showToast('OTP resent successfully!', 'light','success');
+        showToast('OTP resent successfully!', 'light', 'success');
       }
     } catch (error) {
       setErr(error.response?.data?.message || 'Failed to resend OTP');
@@ -102,7 +86,7 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
       setResendDisabled(false);
     }
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [resendDisabled, timer]);
 
   return (
@@ -111,7 +95,6 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
         onSubmit={handleSubmit}
         className="relative flex flex-col text-center bg-white rounded-md w-2/5 h-2/3"
       >
-
         <div className="flex flex-col p-12 justify-between h-full">
           <h1 className="text-4xl uppercase tracking-wider w-full">
             Enter OTP
@@ -125,7 +108,7 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
                 value={digit}
                 onChange={(e) => handleChange(e.target, index)}
                 onKeyDown={(e) => handleKeyDown(e, index)}
-                className={`border-2 pop border-gray-800 text-center text-xl font-medium  placeholder:text-sm w-16 h-16 rounded-md ${
+                className={`border-2 pop border-gray-800 text-center text-xl font-medium placeholder:text-sm w-16 h-16 rounded-md ${
                   resendDisabled ? 'cursor-not-allowed' : 'cursor-pointer'
                 }`}
               />
@@ -142,21 +125,20 @@ const RegisterOTP = ({ setIsOpenPopup, showToast  }) => {
             {resendDisabled ? `Resend OTP in ${timer}s` : 'Resend OTP'}
           </button>
           {err && <p className="text-red-600 mt-4 text-sm">{err}</p>}
-         <div className="flex justify-between items-center pop">
-         <button
-            type="submit"
-            className="bg-green-700 text-white p-3 font-semibold w-1/3 rounded-md"
-          >
-            Submit
-          </button>
-          <button
-            onClick={()=>setIsOpenPopup(false)}
-            className="bg-red-700 text-white p-3 font-semibold w-1/3 rounded-md"
-          >
-            back
-          </button>
-         </div>
-         
+          <div className="flex justify-between items-center pop">
+            <button
+              type="submit"
+              className="bg-green-700 text-white p-3 font-semibold w-1/3 rounded-md"
+            >
+              Submit
+            </button>
+            <button
+              onClick={() => setIsOpenPopup(false)}
+              className="bg-red-700 text-white p-3 font-semibold w-1/3 rounded-md"
+            >
+              back
+            </button>
+          </div>
         </div>
       </form>
     </div>

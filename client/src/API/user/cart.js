@@ -1,6 +1,7 @@
+import { showToast } from "../../helpers/toast";
 import { USER_API } from "../API";
 
-export const fetchUserCart = async (userId, showToast) => {
+export const fetchUserCart = async (userId) => {
   try {
     const response = await USER_API.get(`/user/get_user_cart/${userId}`);
     if (response.status === 200) {
@@ -40,4 +41,27 @@ export const removeProductFromCart = async (productId, userId) => {
     console.error(error.message || 'An error occurred.');
     throw error;
   }
-};
+}
+
+export  const handleAddToCart = async (userId,productId,setAdded) => {
+    try {
+      const payload = {
+        userId,
+        productId: productId,
+      };
+
+      const res = await USER_API.post(
+        `/user/add_to_cart`,
+        payload
+      );
+
+      if (res.status === 200) {
+        setAdded((prev) => ({ ...prev, [productId]: true }));
+        showToast("Products added to cart!", "light", "success");
+      } else {
+        console.error("Failed to add product to cart:", res.data.message);
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error.message);
+    }
+  };

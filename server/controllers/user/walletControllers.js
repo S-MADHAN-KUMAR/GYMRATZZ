@@ -4,7 +4,9 @@ import WalletModel from '../../models/walletModel.js';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
   
 export const get_user_wallet = async (req, res) => {
-    const { userId } = req.body;
+    const { id } = req.params;
+
+    const userId = id
   
     if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
@@ -53,7 +55,7 @@ export const add_wallet_amount = async (req, res) => {
         ],
         mode: 'payment',
         success_url: `${process.env.FRONTEND_URL}/wallet_success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.FRONTEND_URL}/wallet_cancel`,
+        cancel_url: `${process.env.FRONTEND_URL}/wallet_failure`,
         client_reference_id: userId, 
       });
   

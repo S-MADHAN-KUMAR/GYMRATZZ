@@ -4,11 +4,8 @@ import { useSelector } from "react-redux";
 import { profileValidation } from "../../../validations/userValidations";
 import { FaPhone } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
-import { FaLocationDot } from "react-icons/fa6";
-import { fetchCurrentUser } from "../../../API/user/comman";
-import axios from "axios";
 import { showToast } from "../../../helpers/toast";
-import { USER_API } from "../../../API/API";
+import { fetchCurrentUser, updateUserProfile } from "../../../API/user/profileAPI";
 
 const General = () => {
   const [user, setUser] = useState(null);
@@ -26,29 +23,28 @@ const General = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      id:user?._id || currentUser?._id || '',
+      id: user?._id || currentUser?._id || '',
       name: user?.name || " ",
-      phone: user?.phone ,
+      phone: user?.phone,
       email: user?.email || " ",
-      password: user?.password ,
+      password: user?.password,
     },
     validationSchema: profileValidation,
     onSubmit: async (values) => {
       try {
-        const res = await USER_API.put(`/user/update_profile`, values);
+        const res = await updateUserProfile(values);
         if (res.status === 200) {
-          showToast('Logged in successfully!', 'light','success');
-          setIsEditable(false)
-          loadUser()
+          showToast('Profile updated successfully!', 'light', 'success');
+          setIsEditable(false);
+          loadUser();
         }
       } catch (error) {
-        console.error("Error during login:", error);
-        const errorMessage =
-          error.response?.data?.message || "An unexpected error occurred!";
-        showToast(errorMessage, "dark", "error");
+        console.error("Error updating profile", error);
+        showToast(error.message || "An unexpected error occurred!", "dark", "error");
       }
     },
   });
+
   return (
     <>
     {
