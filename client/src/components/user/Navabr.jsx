@@ -61,9 +61,9 @@ const Navabr = () => {
         {/* PROFILE */}
         <div className="">
             <div onClick={
-  currentUser 
-    ? () => navigate('/profile/general') 
-    : () => navigate('/login')
+  !currentUser || !user?.isVerified || !user?.status
+    ? () => navigate('/login')
+    : () => navigate('/profile/general') 
 }
  className="flex items-center gap-x-2 cursor-pointer">
           <h1 className="text-4xl hidden md:block">profile</h1>
@@ -92,19 +92,20 @@ const Navabr = () => {
             <a href="#contact" className="hover:text-red-500 transition-colors drop-shadow-sm">
               Contact
             </a>
-           {
-            !currentUser?.isVerified && !token
-            &&
-            <div className="flex gap-x-4">
-            <a href="login" className="hover:text-red-500 transition-colors drop-shadow-sm">
-              Login
-            </a>
-            <p>/</p>
-            <a href="register" className="hover:text-red-500 transition-colors drop-shadow-sm">
-              Register
-            </a>
-            </div>
-           }
+            {
+  (!user?.isVerified || !token || !user?.status) && (
+    <div className="flex gap-x-4">
+      <a href="login" className="hover:text-red-500 transition-colors drop-shadow-sm">
+        Login
+      </a>
+      <p>/</p>
+      <a href="register" className="hover:text-red-500 transition-colors drop-shadow-sm">
+        Register
+      </a>
+    </div>
+  )
+}
+
           </div>
     </>
 }

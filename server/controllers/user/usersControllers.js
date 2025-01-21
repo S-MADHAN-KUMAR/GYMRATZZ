@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { userGenerateToken } from '../../utils/generateToken.js';
 
 // Register User
-export const registerUser = async (req, res, next) => {
+export const registerUser = async (req, res) => {
   try {
     const { name, email, phone, password, status } = req.body;
 
@@ -14,7 +14,7 @@ export const registerUser = async (req, res, next) => {
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
-    const otpExpiry = Date.now() + 60 * 1000; // 60 seconds expiry
+    const otpExpiry = Date.now() + 60 * 1000; 
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -165,7 +165,11 @@ export const loginUser = async (req, res) => {
   }
 
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email })
+
+    if (!user?.status) {
+      return res.status(400).json({ message: 'Access denied!' });
+    }
 
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password!' });
@@ -209,11 +213,15 @@ export const handle_google_auth = async (req, res) => {
       });
       await user.save();
     } else {
-      if (user.status) {
-        user.name = name || user.name;
-        user.profilePicture = picture || user.profilePicture;
-        await user.save();
+      if (!user.status) {
+        // If the user's status is false, deny login
+        return res.status(403).json({ message: 'Account is disabled' });
       }
+
+      // Update user details if already exists
+      user.name = name || user.name;
+      user.profilePicture = picture || user.profilePicture;
+      await user.save();
     }
 
     const token = userGenerateToken(email);

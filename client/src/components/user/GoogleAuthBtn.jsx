@@ -27,16 +27,14 @@ const GoogleAuthBtn = () => {
   
           // Optionally store other user details in localStorage
           localStorage.setItem('USER_EMAIL', response?.data?.user?.email);
-  
-          // Update Redux state
-      console.log(response.data);
+
       dispatch(RegisterSuccess(response?.data?.user));
       showToast(response.data.message, 'light', 'success');
       navigate('/');
     } catch (error) {
       dispatch(RegisterFailure());
       if (error.response && error.response.status === 403) {
-        showToast('Access denied: User is blocked or inactive', 'dark', 'error');
+        showToast('Access denied', 'dark', 'error');
       } else {
         showToast('Google authentication failed', 'dark', 'error');
       }

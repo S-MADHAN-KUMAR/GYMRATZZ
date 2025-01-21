@@ -72,9 +72,9 @@ const App = () => {
       <ToastContainer />
       <Routes>
         {/* User Routes with Navbar and Footer */}
-        <Route path="/"element={<UserLayout><Home /></UserLayout>} />
-        <Route path="/login"element={<ProtectRoute isProtectedForLoggedIn={true}><UserLayout><Login /></UserLayout></ProtectRoute>}/>
-        <Route path="/register"element={<ProtectRoute isProtectedForLoggedIn={true}><UserLayout><Register /></UserLayout></ProtectRoute>}/>
+        <Route path="/"element={<ProtectRoute ><UserLayout><Home /></UserLayout></ProtectRoute>} />
+        <Route path="/login"element={<ProtectRoute isProtectedForLoggedIn={true} ><UserLayout><Login /></UserLayout></ProtectRoute>}/>
+        <Route path="/register"element={<ProtectRoute isProtectedForLoggedIn={true} ><UserLayout><Register /></UserLayout></ProtectRoute>}/>
         <Route path="/shop"element={<UserLayout><Shop /></UserLayout>}/>
         <Route path="/cart"element={<UserLayout><Cart /></UserLayout>}/>
         <Route path="/wishlist"element={<UserLayout><Wishlist /></UserLayout>}/>
