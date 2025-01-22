@@ -49,6 +49,8 @@ import AdminLogin from "./pages/admin/AdminLoagin";
 import AdminProtectPage from "./pages/admin/AdminProtectPage";
 import WalletSuccess from "./components/user/WalletSuccess";
 import WalletFailure from "./components/user/WalletFailure";
+import AddProductOffers from "./components/admin/add/AddProductOffers";
+import AddCategoriesOffers from "./components/admin/add/AddCategoriesOffers";
 
 const UserLayout = ({ children }) => (
   <>
@@ -120,6 +122,8 @@ const App = () => {
           <Route path="offers" element={<Offers />} />
           <Route path="categories" element={<Categories />} />
           <Route path="add_categories" element={<AddCategories/>} />
+          <Route path="add_products_offers" element={<AddProductOffers/>} />
+          <Route path="add_categories_offers" element={<AddCategoriesOffers/>} />
           <Route path="reviews" element={<Reviews />} />
         </Route>
 

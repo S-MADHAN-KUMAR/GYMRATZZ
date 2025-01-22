@@ -1,40 +1,41 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import { commanValidation } from '../../../validations/admin/productValidations'
 import { useNavigate } from 'react-router-dom'
 import { showToast } from '../../../helpers/toast'
-import axios from 'axios'
+import { addBrand } from '../../../API/admin/addAPI'
+import BtnLoader from '../../../helpers/btnLoader'
 
 const AddBrands = () => {
   const navigate =useNavigate()
-  const formik = useFormik({
-    initialValues: {
-      name: '',
-      image: null, 
-    },
-    validationSchema: commanValidation,
-    onSubmit: async (values) => {
-      try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/admin/add_brands`,
-          values, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+    const [loading, setLoading] = useState(false)
+  
+    const formik = useFormik({
+      initialValues: {
+        name: '',
+        image: null,
+      },
+      validationSchema: commanValidation,
+      onSubmit: async (values) => {
+        setLoading(true);
+        try {
+          const res = await addBrand(values);
+          if (res.status === 200) {
+            setLoading(false);
+            showToast('Brand added successfully', 'light', 'success');
+            navigate('/dashboard/brands');
           }
-        );
-        if (res.status === 200) {
-          showToast('Brand added successfully', 'light', 'success');
-          navigate('/dashboard/brands');
+        } catch (error) {
+          setLoading(false);  
+          const errorMessage =
+            error?.response?.data?.message ||
+            'Something went wrong. Please try again.';
+          console.error('Error adding brand:', errorMessage);
+  
+          showToast(errorMessage, 'dark', 'error');
         }
-      } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Something went wrong. Please try again.';
-        console.error("Error adding brands:", errorMessage);
-        showToast(errorMessage, 'dark', 'error');
-      }
-    },
-    
-  })
+      },
+    });
 
   return (
     <div className='flex flex-col gap-6'>
@@ -90,7 +91,9 @@ const AddBrands = () => {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="button">Add Brand</button>
+        <button type="submit" className="button" disabled={loading}>
+            {loading ? <BtnLoader /> : 'Add Brand'}
+          </button>
       </form>
     </div>
   )

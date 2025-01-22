@@ -24,9 +24,15 @@ export const add_brands = async(req,res)=>{
     try {
       const {name} = req.body
       const image = req.file
-
-      console.log(name,image);
       
+      const existNameBrand = await BrandModel.findOne({ name });
+
+    if (existNameBrand) {
+      return res.status(400).json({
+        success: false,
+        message: "Brand Name Already Exist In Brands"
+      });
+    }
   
       const uploadImage = await imageUploadUtil(image.buffer);
   

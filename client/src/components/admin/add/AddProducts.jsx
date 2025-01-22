@@ -7,11 +7,13 @@ import {
   fetchBrands,
   fetchCategories,
 } from "../../../API/admin/dashboardUpdate";
-import axios from "axios";
 import { showToast } from "../../../helpers/toast";
 import { useNavigate } from "react-router-dom";
+import { addProduct } from "../../../API/admin/addAPI";
+import BtnLoader from "../../../helpers/btnLoader";
 
 const AddProducts = () => {
+  const [loading,setLoading]=useState(false)
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
   const cropperRef = useRef(null);
@@ -38,30 +40,34 @@ const AddProducts = () => {
     },
     validationSchema: addProductValidation,
     onSubmit: async (values, { setSubmitting }) => {
+      setLoading(true)
       const formData = new FormData();
-  
+
       Object.entries(values).forEach(([key, value]) => {
         if (key === "images") {
           value.forEach((image) => formData.append("images", image));
         } else {
-          formData.append(key, value); 
+          formData.append(key, value);
         }
-      })
-  
+      });
+
       setSubmitting(false);
-  
+
       try {
-        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/admin/add_product`, formData )
-  
+        const response = await addProduct(formData);
+        setLoading(false)
+
         if (response.status === 200) {
-          showToast("Product added successfully!",'light','success');
+          showToast("Product added successfully!", "light", "success");
           navigate("/dashboard/products");
         }
       } catch (error) {
+        setLoading(false)
         console.error("Error adding product:", error);
       }
     },
   });
+
   
 
   const handleImageChange = (e) => {
@@ -279,9 +285,10 @@ const AddProducts = () => {
         )}
 
         {/* Submit Button */}
-        <button type="submit" className="button">
-          Add Product
-        </button>
+        <button type="submit" className="button" disabled={loading}>
+  {loading ? <BtnLoader/> : 'Add Product'}
+</button>
+
       </form>
     </div>
   );

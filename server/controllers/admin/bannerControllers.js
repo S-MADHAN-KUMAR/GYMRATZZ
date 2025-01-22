@@ -24,9 +24,15 @@ export const add_banners = async(req,res)=>{
     try {
       const {name} = req.body
       const image = req.file
-
-      console.log(name,image);
       
+      const existNameBanner = await BannerModel.findOne({ name });
+
+    if (existNameBanner) {
+      return res.status(400).json({
+        success: false,
+        message: "Banner Name Already Exist In Banners"
+      });
+    } 
   
       const uploadImage = await imageUploadUtil(image.buffer);
   

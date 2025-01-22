@@ -60,4 +60,59 @@ export const couponValidation = yup.object({
         return startDate !== value; 
       },
     ),
+})
+
+
+export const productOfferValidation =yup.object({
+  productId: yup.string().required('Please select a product'),
+  discount: yup
+    .number()
+    .positive('Discount must be greater than zero')
+    .required('Please enter a discount'),
+  startDate: yup
+    .date()
+    .required('Please select a start date')
+    .test(
+      'is-today-or-future',
+      'Start date cannot be in the past',
+      (value) => value && new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
+    ),
+  endDate: yup
+    .date()
+    .required('Please select an end date')
+    .test(
+      'is-after-start-date',
+      'End date cannot be earlier than the start date',
+      function (value) {
+        const { startDate } = this.parent;
+        return startDate && value && new Date(value) >= new Date(startDate);
+      }
+    )
+})
+
+export const categoryOfferValidation = yup.object({
+  categoryId: yup.string().required('Please select a category'),
+  discount: yup
+    .number()
+    .positive('Discount must be greater than zero')
+    .required('Please enter a discount'),
+  startDate: yup
+    .date()
+    .required('Please select a start date')
+    .test(
+      'is-today-or-future',
+      'Start date cannot be in the past',
+      (value) => value && new Date(value).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
+    ),
+  endDate: yup
+    .date()
+    .required('Please select an end date')
+    .test(
+      'is-after-start-date',
+      'End date cannot be earlier than the start date',
+      function (value) {
+        const { startDate } = this.parent;
+        return startDate && value && new Date(value) >= new Date(startDate);
+      }
+    )
 });

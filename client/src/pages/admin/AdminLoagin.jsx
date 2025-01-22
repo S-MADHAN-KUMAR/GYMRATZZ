@@ -2,16 +2,14 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 import { loginValidationSchema } from '../../validations/userValidations.js';
 import { showToast } from '../../helpers/toast.js';
 import { AdminLoginFailure, AdminLoginStart, AdminLoginSuccess } from '../../redux/admin/adminSlice.js';
-
+import { loginAPI } from '../../API/admin/authAPI.js';
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -19,11 +17,12 @@ const AdminLogin = () => {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       dispatch(AdminLoginStart());
       try {
-        const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/admin/login`, values,{withCredentials:true});
+        const response = await loginAPI(values);
+
         if (response.status === 200) {
           // Store token in localStorage
           localStorage.setItem('ADMIN_TOKEN', response?.data?.token);
-  
+
           // Update Redux state
           showToast('Login successful!', 'light');
           dispatch(AdminLoginSuccess(response?.data?.admin));
@@ -33,7 +32,8 @@ const AdminLogin = () => {
           dispatch(AdminLoginFailure());
         }
       } catch (err) {
-        const errorMessage = err.response?.data?.message || 'Error logging in. Please try again later.';
+        const errorMessage =
+          err.response?.data?.message || 'Error logging in. Please try again later.';
         setErrors({ server: errorMessage });
         showToast(errorMessage, 'dark', 'error');
         dispatch(AdminLoginFailure());

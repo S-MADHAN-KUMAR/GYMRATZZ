@@ -15,9 +15,9 @@ const ProductOffers = () => {
     <div className='flex flex-col gap-y-12'>
     <div className="flex items-center justify-between">
       <h1 className='text-gray-300'>Product Offers</h1>
-      <button className='button'>
+      <a href='/dashboard/add_products_offers' className='button'>
         Add ProductOffers
-      </button>
+      </a>
       </div>
       <table className="table-auto w-full text-center text-sm">
           {/* Table Head */}

@@ -20,6 +20,7 @@ import {
     RadialLinearScale
 } from 'chart.js';
 import { fetchBestSellingBrands, fetchBestSellingCategories, fetchBestSellingProducts, fetchStatistics } from '../../API/admin/dashboardStatistics';
+import { fetchSalesReport } from '../../API/admin/homeAPI';
 
 ChartJS.register(
     CategoryScale,
@@ -81,30 +82,12 @@ const Home = () => {
     setFilters(updatedFilters);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
-
-    if (filters.startDate && !filters.endDate) {
-      setFilters({ ...filters, endDate: filters.startDate });
-    }
-
-    try {
-      console.log(filters);
-
-      const response = await ADMIN_API.post(`/admin/sales_report`, null, {
-        params: {
-          startDate: filters.startDate,
-          endDate: filters.endDate
-        }
-      });
-      setReport(response.data);
-      console.log(response?.data);
-      
-    } catch (error) {
-      console.error('Error fetching sales report:', error);
-      setError('Failed to fetch sales report. Please try again.');
-    }
+    
+    // Call the API function
+    fetchSalesReport(filters, setReport, setError);
   };
 
   const downloadPDF = () => {

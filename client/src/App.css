@@ -63,6 +63,9 @@ h1{
   line-height: 20px;
   cursor: pointer;
   transition: all 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: white;
   font-size: 18px;
   font-weight: 500;

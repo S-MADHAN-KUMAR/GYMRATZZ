@@ -26,6 +26,14 @@ export const add_product = async (req, res) => {
           message: 'Please upload at least 3 images (minimum required).',
         });
       }
+
+      const existNamedProduct = await ProductModel.findOne({ name });
+
+      if (existNamedProduct) {
+        return res.status(400).send({
+          message: 'A product with this name already exists. Please choose a different name.',
+        });
+      }
   
       const uploadPromises = files.map((file) => imageUploadUtil(file.buffer));
       const imageUrls = await Promise.all(uploadPromises);

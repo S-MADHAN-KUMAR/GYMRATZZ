@@ -20,11 +20,11 @@ router.post('/login',adminLogin)
 
 //=================================[ Banner ]===============================//
 
-router.post('/add_banners',adminAuth,upload.single('image'), add_banners);
+router.post('/add_banners',adminAuth,upload.single('image'), add_banners)
 
 // router.get('get_edit_banners/:id',adminAuth,get_edit_banners)
 
-router.put("/toggleBlockBanners/:id",adminAuth,toggleBlockBanners);
+router.put("/toggleBlockBanners/:id",adminAuth,toggleBlockBanners)
 
 // router.put('update_banners',adminAuth,upload.single('image'),update_banners)
 

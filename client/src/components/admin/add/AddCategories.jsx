@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import { commanValidation } from '../../../validations/admin/productValidations'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { showToast } from '../../../helpers/toast'
+import { addCategory } from '../../../API/admin/addAPI'
+import BtnLoader from '../../../helpers/btnLoader'
 
 const AddCategories = () => {
   const navigate = useNavigate()
+      const [loading, setLoading] = useState(false)
+  
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -14,22 +18,23 @@ const AddCategories = () => {
     },
     validationSchema: commanValidation,
     onSubmit: async (values) => {
+      setLoading(true);
+
       try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/admin/add_categories`,
-          values, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
+        const res = await addCategory(values)
+
         if (res.status === 200) {
+          setLoading(false);
+
           showToast('Category added successfully', 'light', 'success');
           navigate('/dashboard/categories');
         }
       } catch (error) {
-        console.error("Error adding :", error.response.data.message); 
-        showToast(error.response.data.message, 'dark', 'error');
+        setLoading(false);
+
+        const errorMessage = error.response?.data?.message || 'Something went wrong. Please try again.';
+        console.error("Error adding category:", errorMessage);
+        showToast(errorMessage, 'dark', 'error');
       }
     },
   })
@@ -88,7 +93,9 @@ const AddCategories = () => {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="button">Add Category</button>
+        <button type="submit" className="button" disabled={loading}>
+            {loading ? <BtnLoader /> : 'Add Category'}
+          </button>
       </form>
     </div>
   )

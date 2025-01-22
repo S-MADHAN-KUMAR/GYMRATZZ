@@ -1,39 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useFormik } from 'formik'
-import axios from 'axios'
 import { commanValidation } from '../../../validations/admin/productValidations'
 import { showToast } from '../../../helpers/toast'
 import { useNavigate } from 'react-router-dom'
+import { addBannerAPI } from '../../../API/admin/addAPI'
+import BtnLoader from '../../../helpers/btnLoader'
 
 const AddBanner = () => {
   const navigate = useNavigate()
+      const [loading, setLoading] = useState(false)
+  
   const formik = useFormik({
     initialValues: {
       name: '',
-      image: null, 
+      image: null,
     },
     validationSchema: commanValidation,
     onSubmit: async (values) => {
+      setLoading(true);
       try {
-        const res = await axios.post(
-          `${import.meta.env.VITE_SERVER_URL}/admin/add_banners`,
-          values, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
-        if (res.status === 200) {
-          showToast('Brand added successfully', 'light', 'success');
+        const res = await addBannerAPI(values);
+
+        if (res?.status === 200) {
+          setLoading(false);
+
+          showToast('Banner added successfully', 'light', 'success');
           navigate('/dashboard/banners');
+        } else {
+          const errorMessage =
+            res?.data?.message || 'Something went wrong. Please try again.';
+          showToast(errorMessage, 'dark', 'error');
         }
       } catch (error) {
-        const errorMessage = error.response?.data?.message || 'Something went wrong. Please try again.';
-        console.error("Error adding brands:", errorMessage);
+        setLoading(false);
+        let errorMessage = 'Something went wrong. Please try again.';
+        if (error?.response) {
+          errorMessage = error.response?.data?.message || errorMessage;
+        } else if (error?.message) {
+          errorMessage = error.message || errorMessage;
+        }
+
+        console.error('Error adding banner:', errorMessage);
         showToast(errorMessage, 'dark', 'error');
       }
     },
-  })
+  });
+
 
   return (
     <div className='flex flex-col gap-6'>
@@ -89,8 +101,9 @@ const AddBanner = () => {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="button">Add banner</button>
-      </form>
+        <button type="submit" className="button" disabled={loading}>
+            {loading ? <BtnLoader /> : 'Add Banner'}
+          </button>      </form>
     </div>
   )
 }
