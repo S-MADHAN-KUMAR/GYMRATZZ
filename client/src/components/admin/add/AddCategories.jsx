@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import { commanValidation } from '../../../validations/admin/productValidations'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import { showToast } from '../../../helpers/toast'
 import { addCategory } from '../../../API/admin/addAPI'
-import BtnLoader from '../../../helpers/btnLoader'
+import BtnLoader from '../../BtnLoader.jsx'
 
 const AddCategories = () => {
   const navigate = useNavigate()

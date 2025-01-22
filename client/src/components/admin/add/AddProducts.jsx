@@ -10,7 +10,7 @@ import {
 import { showToast } from "../../../helpers/toast";
 import { useNavigate } from "react-router-dom";
 import { addProduct } from "../../../API/admin/addAPI";
-import BtnLoader from "../../../helpers/btnLoader";
+import BtnLoader from "../../BtnLoader";
 
 const AddProducts = () => {
   const [loading,setLoading]=useState(false)

@@ -4,7 +4,7 @@ import { couponValidation } from '../../../validations/admin/productValidations'
 import { showToast } from '../../../helpers/toast.js'
 import { useNavigate } from 'react-router-dom'
 import { addCoupon } from '../../../API/admin/addAPI.js'
-import BtnLoader from '../../../helpers/btnLoader.jsx'
+import BtnLoader from '../../BtnLoader.jsx'
 
 const AddCoupons = () => {
   const navigate = useNavigate();

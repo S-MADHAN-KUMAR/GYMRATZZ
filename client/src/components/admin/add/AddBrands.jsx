@@ -4,7 +4,7 @@ import { commanValidation } from '../../../validations/admin/productValidations'
 import { useNavigate } from 'react-router-dom'
 import { showToast } from '../../../helpers/toast'
 import { addBrand } from '../../../API/admin/addAPI'
-import BtnLoader from '../../../helpers/btnLoader'
+import BtnLoader from '../../BtnLoader.jsx'
 
 const AddBrands = () => {
   const navigate =useNavigate()

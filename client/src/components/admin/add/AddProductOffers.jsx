@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { addProductOffer, fetchProducts } from '../../../API/admin/addAPI';
-import BtnLoader from '../../../helpers/btnLoader';
+import BtnLoader from '../../BtnLoader';
 import { productOfferValidation } from '../../../validations/admin/productValidations';
 import { showToast } from '../../../helpers/toast';
 import { useNavigate } from 'react-router-dom';
