@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { ADMIN_API } from '../../API/API';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable'; 
 import * as XLSX from 'xlsx'; 
@@ -21,6 +19,7 @@ import {
 } from 'chart.js';
 import { fetchBestSellingBrands, fetchBestSellingCategories, fetchBestSellingProducts, fetchStatistics } from '../../API/admin/dashboardStatistics';
 import { fetchSalesReport } from '../../API/admin/homeAPI';
+import { showToast } from '../../helpers/toast';
 
 ChartJS.register(
     CategoryScale,
@@ -85,10 +84,19 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(null);
-    
-    // Call the API function
+  
+    // Validate fields
+    if (!filters.startDate || !filters.endDate) {
+      setError("Start Date and End Date are required.");
+      showToast("Start Date and End Date are required.",'dark','error');
+      return;
+    }
+  
+  
+    // Call the API function if all fields are valid
     fetchSalesReport(filters, setReport, setError);
   };
+  
 
   const downloadPDF = () => {
     const doc = new jsPDF();
