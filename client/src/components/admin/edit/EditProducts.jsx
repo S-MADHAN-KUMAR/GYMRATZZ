@@ -8,11 +8,13 @@ import {
   fetchCategories,
   fetchEditProduct,
 } from "../../../API/admin/dashboardUpdate";
-import axios from "axios";
 import { showToast } from "../../../helpers/toast";
 import { useNavigate, useParams } from "react-router-dom";
+import { updateProduct } from "../../../API/admin/editAPI.js";
+import BtnLoader from "../../BtnLoader.jsx";
 
 const EditProducts = () => {
+   const [loading,setLoading]=useState(false)
     const {id}=useParams()
   const [brands, setBrands] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -67,19 +69,18 @@ const EditProducts = () => {
     },
     validationSchema: addProductValidation,
     onSubmit: async (values, { setSubmitting }) => {
+      setLoading(true)
       const formData = new FormData();
-  
+
       for (let key in values) {
         if (key === "images") {
-          // Ensure all images are converted to Blob before appending
           const blobImages = await Promise.all(
             values.images.map(async (image, index) => {
               const blob = await convertToBlob(image);
               return blob;
             })
           );
-    
-          // Append the converted blob images to FormData
+
           blobImages.forEach((blob, index) => {
             formData.append("images", blob, `image-${index}`);
           });
@@ -87,21 +88,29 @@ const EditProducts = () => {
           formData.append(key, values[key]);
         }
       }
-  
+
       setSubmitting(false);
-  
+
       try {
-        const response = await axios.put(`${import.meta.env.VITE_SERVER_URL}/admin/update_product/${id}`, formData )
-  
+        const response = await updateProduct(id, formData); // Use the API function
+
+        console.log(response);
+        
+
         if (response.status === 200) {
-          showToast("Product Updated successfully!",'light','success');
+          setLoading(false)
+
+          showToast("Product Updated successfully!", "light", "success");
           navigate("/dashboard/products");
         }
       } catch (error) {
-        console.error("Error adding product:", error);
+        setLoading(false)
+
+        console.error("Error updating product:", error);
       }
     },
   });
+
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
