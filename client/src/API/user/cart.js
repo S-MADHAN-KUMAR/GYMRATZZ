@@ -43,7 +43,7 @@ export const removeProductFromCart = async (productId, userId) => {
   }
 }
 
-export  const handleAddToCart = async (userId,productId,setAdded) => {
+export  const handleAddToCart = async (userId,productId,setAdded,navigate) => {
     try {
 
       if(!userId){

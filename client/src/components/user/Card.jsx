@@ -38,17 +38,6 @@ const Card = ({ product }) => {
     loadUser();
   }, [product, user]);
 
-  const AddToWishlistButton = () => {
-    {
-      currentUser
-        ? 
-        handleAddWishlist(userId,product?._id,navigate)
-        : 
-        showToast('Please Login','dark','error')
-        navigate('/login')
-    }
-    };
-
 
   const isInWishlist = user?.wishlist?.some(
     (item) => item.productId === product?._id
@@ -134,7 +123,7 @@ const Card = ({ product }) => {
         {/* ADD TO CART BTN */}
         <div className=" items-center flex justify-between ">
           <button
-            onClick={AddToWishlistButton}
+            onClick={()=>handleAddWishlist(userId,product?._id,navigate)}
             className={
               isInWishlist ? "w-7 h-7 cursor-not-allowed " : "w-7 h-7  "
             }
@@ -187,7 +176,7 @@ const Card = ({ product }) => {
             </button>
           ) : (
             <button
-            onClick={()=>handleAddToCart(userId, product?._id, setAdded)}
+            onClick={()=>handleAddToCart(userId, product?._id, setAdded,navigate)}
               className="bg-black rounded text-white font-Roboto text-xs px-2 py-1 sm:text-sm tracking-widest sm:px-3 sm:py-1 flex items-center sm:gap-x-2 hover:scale-105 float-right"
             >
       

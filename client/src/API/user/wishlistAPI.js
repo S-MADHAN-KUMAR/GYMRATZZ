@@ -36,6 +36,10 @@ export  const handleRemoveProduct = async (userId,productId,loadWishlist) => {
 
 export const handleAddWishlist = async (userId,productId,navigate) => {
     try {
+      if(!userId){
+        showToast('Please Login','dark','error')
+        navigate('/login')
+      }
       const payload = {
         userId,
         productId
@@ -46,7 +50,7 @@ export const handleAddWishlist = async (userId,productId,navigate) => {
       );
 
       if (res.status === 200) {
-        showToast("Product Added to Wishlist!", "dark", "success");
+        showToast("Product Added to Wishlist!", "light", "success");
       }
     } catch (error) {
       console.error("Error adding to wishlist:", error.message);
