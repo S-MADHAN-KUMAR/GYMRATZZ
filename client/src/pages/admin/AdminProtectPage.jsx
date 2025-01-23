@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import PageLoader from '../../components/PageLoader';
 
 const AdminProtectPage = ({ children }) => {
   const { currentAdmin } = useSelector((state) => state.admin);
@@ -27,7 +28,7 @@ const AdminProtectPage = ({ children }) => {
   }, [currentAdmin, navigate, location.pathname, loading]);
 
   if (loading) {
-    return <div>Loading...</div>; // Optionally show a loading indicator
+    return <PageLoader/>; // Optionally show a loading indicator
   }
 
   return children;

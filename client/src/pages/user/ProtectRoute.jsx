@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchCurrentUser } from '../../API/user/comman.js';
+import PageLoader from '../../components/PageLoader.jsx';
 
 const ProtectRoute = ({ children, isProtectedForLoggedIn = false }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -42,7 +43,7 @@ const ProtectRoute = ({ children, isProtectedForLoggedIn = false }) => {
   }, [currUser, isLoading, navigate, isProtectedForLoggedIn]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Optional: Show a spinner or loading message
+    return <PageLoader/>; // Optional: Show a spinner or loading message
   }
 
   // Allow access for non-blocked and appropriate users
