@@ -73,7 +73,7 @@ const Home = () => {
           <div>
             <span className="flex justify-evenly items-center h-full gap-x-4">
               {brands.length > 0 ? (
-                brands.map((brand, index) => (
+                brands.slice(0,6).map((brand, index) => (
                   <img key={index} src={brand?.imageUrl} className="w-40 hover:scale-105 duration-500" />
                 ))
               ) : (
@@ -82,7 +82,7 @@ const Home = () => {
             </span>
             <span className="hidden md:flex justify-evenly items-center h-full gap-x-4">
               {brands.length > 0 ? (
-                brands.map((brand, index) => (
+                brands.slice(0,6).map((brand, index) => (
                     <img key={index} src={brand?.imageUrl} className="w-40 hover:scale-105 duration-500" />
                   ))
               ) : (

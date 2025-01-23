@@ -7,7 +7,7 @@ const Footer = () => {
 <div className="bg-gray-800 p-6 md:p-10 mt-6 md:mt-12 w-full max-w-[1200px]">
   {/* Logo Section */}
   <div className="flex h4 gap-x-4 items-center mb-4 tracking-widest">
-  <img src="/public/logo.png" className="w-12 h-12 " />    
+  <img src="/logo.png" className="w-12 h-12 " />    
   <h1 className="text-5xl text-white">
    gym rats
   </h1>
