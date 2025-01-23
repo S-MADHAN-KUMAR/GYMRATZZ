@@ -29,31 +29,7 @@ const EditProducts = () => {
     fetchEditProduct(id,setProduct)
     fetchCategories(setCategories);
     fetchBrands(setBrands);
-  }, []);
-
-  const convertToBlob = async (file) => {
-    if (typeof file === "string" && file.startsWith("data:image/")) {
-      const [metadata, base64Data] = file.split(",");
-      const mimeType = metadata.match(/data:(image\/[a-zA-Z]+);base64/)[1];
-      const binaryData = atob(base64Data);
-      const arrayBuffer = new Uint8Array(binaryData.length);
-      for (let i = 0; i < binaryData.length; i++) {
-        arrayBuffer[i] = binaryData.charCodeAt(i);
-      }
-      return new Blob([arrayBuffer], { type: mimeType });
-    } else if (typeof file === "string" && file.startsWith("http")) {
-      const response = await fetch(file);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch image from URL: ${file}`);
-      }
-      return await response.blob();
-    } else if (file instanceof File || file instanceof Blob) {
-      return file;
-    } else {
-      throw new Error(`Unsupported file format: ${file}`);
-    }
-  };
-  
+  }, [])
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -110,6 +86,32 @@ const EditProducts = () => {
       }
     },
   });
+
+
+  const convertToBlob = async (file) => {
+    if (typeof file === "string" && file.startsWith("data:image/")) {
+      const [metadata, base64Data] = file.split(",");
+      const mimeType = metadata.match(/data:(image\/[a-zA-Z]+);base64/)[1];
+      const binaryData = atob(base64Data);
+      const arrayBuffer = new Uint8Array(binaryData.length);
+      for (let i = 0; i < binaryData.length; i++) {
+        arrayBuffer[i] = binaryData.charCodeAt(i);
+      }
+      return new Blob([arrayBuffer], { type: mimeType });
+    } else if (typeof file === "string" && file.startsWith("http")) {
+      const response = await fetch(file);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image from URL: ${file}`);
+      }
+      return await response.blob();
+    } else if (file instanceof File || file instanceof Blob) {
+      return file;
+    } else {
+      throw new Error(`Unsupported file format: ${file}`);
+    }
+  };
+  
+
 
 
   const handleImageChange = (e) => {
@@ -307,34 +309,34 @@ const EditProducts = () => {
          {/* Show Cropper */}
          {showCropper && (
           <div className="fixed -top-10 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="bg-white p-4 rounded-md shadow-md mt-2">
               <Cropper
                 ref={cropperRef}
                 src={currentImage}
-                style={{ width: "400px", height: "400px" }}
+                style={{ width: "400px", height: "420px" }}
                 aspectRatio={1}
                 guides={false}
               />
-             <button
+             <a
                 onClick={handleCrop}
-                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg cursor-pointer"
               >
                 Crop Image
-              </button>
-              <button
+              </a>
+              <a
                 onClick={() => setShowCropper(false)}
-                className="mt-2 ml-2 bg-gray-500 text-white px-4 py-2 rounded-lg"
+                className="mt-2 ml-2 bg-gray-500 text-white px-4 py-2 rounded-lg cursor-pointer"
               >
                 Cancel
-              </button>
+              </a>
             </div>
           </div>
         )}
 
         {/* Submit Button */}
-        <button type="submit" className="button">
-          Update Product
-        </button>
+        <button type="submit" className="button" disabled={loading}>
+  {loading ? <BtnLoader/> : 'Update Product'}
+</button>
       </form>
     </div>
   );
