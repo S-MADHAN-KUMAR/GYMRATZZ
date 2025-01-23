@@ -3,7 +3,8 @@ import { showToast } from "../../helpers/toast";
 
 export const fetchUserWishlist = async (userId, setWishlists) => {
   try {
-    const res = await USER_API.get(`/user/get_user_wishlist/${userId}`);
+    const id = userId
+    const res = await USER_API.get(`/user/get_user_wishlist/${id}`);
 
     if (res.status === 200) {
       setWishlists(res?.data);
@@ -35,10 +36,6 @@ export  const handleRemoveProduct = async (userId,productId,loadWishlist) => {
 
 export const handleAddWishlist = async (userId,productId,navigate) => {
     try {
-       if(!userId){
-        showToast('Please Login','dark','error')
-        navigate('/login')
-      }
       const payload = {
         userId,
         productId

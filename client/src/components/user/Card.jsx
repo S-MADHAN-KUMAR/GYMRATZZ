@@ -33,7 +33,29 @@ const Card = ({ product }) => {
     } catch (err) {
       console.log(err.message || "Something went wrong.");
     }
-  };
+  }
+
+  const AddToCartButton = () => {
+    {
+      currentUser
+        ? 
+        handleAddToCart(userId, product?._id, setAdded)
+        : 
+        showToast('Please Login','dark','error')
+        navigate('/login')
+    }
+    };
+
+  const AddToWishlistButton = () => {
+    {
+      currentUser
+        ? 
+        handleAddWishlist(userId,product?._id,navigate)
+        : 
+        showToast('Please Login','dark','error')
+        navigate('/login')
+    }
+    };
 
   useEffect(() => {
     loadUser();
@@ -123,7 +145,7 @@ const Card = ({ product }) => {
         {/* ADD TO CART BTN */}
         <div className=" items-center flex justify-between ">
           <button
-            onClick={()=>handleAddWishlist(userId,product?._id,navigate)}
+            onClick={AddToWishlistButton}
             className={
               isInWishlist ? "w-7 h-7 cursor-not-allowed " : "w-7 h-7  "
             }
@@ -176,7 +198,7 @@ const Card = ({ product }) => {
             </button>
           ) : (
             <button
-              onClick={()=>handleAddToCart(userId,product?._id,setAdded)}
+            onClick={AddToCartButton}
               className="bg-black rounded text-white font-Roboto text-xs px-2 py-1 sm:text-sm tracking-widest sm:px-3 sm:py-1 flex items-center sm:gap-x-2 hover:scale-105 float-right"
             >
       
