@@ -86,10 +86,10 @@ export const remove_wishlist_product = async (req, res) => {
 
 export const get_user_wishlist = async (req, res) => {
     try {
-        const { id } = req.params;
-
+        const { id } = req.params
+        
         // Fetch the wishlist for the user
-        const wishlist = await WishlistModel.findOne({ userId: id });
+        const wishlist = await WishlistModel.findOne({ userId:id});
 
         if (!wishlist) {
             return res.status(404).json({ message: 'Wishlist not found' });

@@ -1,9 +1,9 @@
 import { USER_API } from "../../API/API";
 import { showToast } from "../../helpers/toast";
 
-export const fetchUserWishlist = async (id, setWishlists) => {
+export const fetchUserWishlist = async (userId, setWishlists) => {
   try {
-    const res = await USER_API.get(`/user/get_user_wishlist/${id}`);
+    const res = await USER_API.get(`/user/get_user_wishlist/${userId}`);
 
     if (res.status === 200) {
       setWishlists(res?.data);

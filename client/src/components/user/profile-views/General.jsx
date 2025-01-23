@@ -6,11 +6,13 @@ import { FaPhone } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { showToast } from "../../../helpers/toast";
 import { fetchCurrentUser, updateUserProfile } from "../../../API/user/profileAPI";
+import BtnLoader from "../../BtnLoader";
 
 const General = () => {
   const [user, setUser] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
   const [isEditable, setIsEditable] = useState(false);
+  const [loading,setLoading] = useState(false)
   const loadUser = async () => {
     const fetchUserData = await fetchCurrentUser(currentUser?._id);
     setUser(fetchUserData);
@@ -31,14 +33,19 @@ const General = () => {
     },
     validationSchema: profileValidation,
     onSubmit: async (values) => {
+      setLoading(true)
       try {
         const res = await updateUserProfile(values);
-        if (res.status === 200) {
+        console.log(res);
+        
+        if (res.success) {
+          setLoading(false)
           showToast('Profile updated successfully!', 'light', 'success');
           setIsEditable(false);
           loadUser();
         }
       } catch (error) {
+        setLoading(false)
         console.error("Error updating profile", error);
         showToast(error.message || "An unexpected error occurred!", "dark", "error");
       }
@@ -101,9 +108,9 @@ const General = () => {
     </button>
   ) : (
     <div className="flex justify-between">
-      <button className="w-40 button" onClick={formik.handleSubmit}>
-        <span> Save</span>
-      </button>
+      <button type="submit" onClick={formik.handleSubmit} className="button" disabled={loading}>
+  {loading ? <BtnLoader/> : 'Save'}
+</button>
       <button className="btn w-40 button" onClick={() => setIsEditable(false)}>
         <span>Cancel</span>
       </button>

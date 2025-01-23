@@ -27,6 +27,7 @@ export const update_profile = async (req, res) => {
       res.status(200).json({
         message: "Updated Successfully",
         updatedUser: user,
+        success:true
       });
     } else {
       res.status(400).json({ message: "Update failed!" });

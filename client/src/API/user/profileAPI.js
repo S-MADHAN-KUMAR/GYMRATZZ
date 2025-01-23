@@ -13,7 +13,7 @@ export const fetchCurrentUser = async (userId) => {
 export const updateUserProfile = async (userData) => {
     try {
       const response = await USER_API.put(`/user/update_profile`, userData);
-      return response.data;
+      return response.data
     } catch (error) {
       throw new Error("Error updating user profile")
     }

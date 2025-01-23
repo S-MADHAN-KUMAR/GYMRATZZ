@@ -12,7 +12,6 @@ const Wishlist = () => {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const userId = currentUser?._id;
-
   const loadWishlist = async () => {
     await fetchUserWishlist(userId, setWishlists);
   };
@@ -32,6 +31,8 @@ const Wishlist = () => {
     loadWishlist();
   }, []);
 
+
+  
 
   const findMaxStock = (productId) => {
     const cartProduct = cart?.products.find(

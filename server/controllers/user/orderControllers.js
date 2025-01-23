@@ -3,6 +3,9 @@ import Stripe from "stripe";
 import ProductModel from "../../models/productsModel.js";
 import CouponModel from "../../models/couponMedel.js";
 import WalletModel from "../../models/walletModel.js";
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const currency = "inr";

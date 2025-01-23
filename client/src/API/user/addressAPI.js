@@ -12,9 +12,9 @@ export const addAddress = async (addressData) => {
 
   export const fetchEditAddress = async (setAddress, data) => {
     try {
-      const response = await USER_API.post('/user/get_address', data);
+      const response = await USER_API.post('/user/get_edit_address', data);
       if (response.status === 200) {
-        setAddress(response.data.address);
+        setAddress(response.data);
       }
     } catch (error) {
       console.error('Error fetching address:', error);

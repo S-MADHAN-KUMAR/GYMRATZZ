@@ -1,16 +1,16 @@
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { addressValidation } from '../../../validations/userValidations';
 import { showToast } from '../../../helpers/toast';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { USER_API } from '../../../API/API';
 import { addAddress } from '../../../API/user/addressAPI';
+import BtnLoader from '../../BtnLoader';
 
 const AddAddress = () => {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
+  const [loading,setLoading] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -25,13 +25,16 @@ const AddAddress = () => {
     },
     validationSchema: addressValidation,
     onSubmit: async (values) => {
+      setLoading(true)
       try {
         const response = await addAddress(values)
         if (response.status === 200) {
+          setLoading(false)
           showToast('Address added successfully!', 'light', 'success');
           navigate('/profile/address');
         }
       } catch (error) {
+        setLoading(false)
         console.error('Error during address submission:', error);
         const errorMessage = error.response?.data?.message || 'An unexpected error occurred!';
         showToast(errorMessage, 'dark', 'error');
@@ -122,9 +125,9 @@ const AddAddress = () => {
 
           {/* Buttons */}
           <div className="flex justify-between mt-10 gap-5">
-            <button type="submit" className="button bg-blue-500 text-white px-4 py-2 rounded">
-              Add
-            </button>
+          <button type="submit" className="button" disabled={loading}>
+  {loading ? <BtnLoader/> : 'Save'}
+</button>
             <button type="button" className="button bg-gray-500 text-white px-4 py-2 rounded" onClick={handleCancel}>
               Cancel
             </button>

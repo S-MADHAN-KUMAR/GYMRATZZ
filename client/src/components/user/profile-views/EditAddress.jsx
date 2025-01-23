@@ -5,10 +5,12 @@ import { showToast } from '../../../helpers/toast';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { fetchEditAddress, updateAddress } from '../../../API/user/addressAPI';
+import BtnLoader from '../../BtnLoader';
 
 const EditAddress = () => {
   const { id } = useParams();
   const [address, setAddress] = useState(null);
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
 
@@ -38,6 +40,7 @@ const EditAddress = () => {
     },
     validationSchema: addressValidation,
     onSubmit: async (values) => {
+      setLoading(true)
       try {
         const response = await updateAddress({
           userId: currentUser?._id,
@@ -45,10 +48,12 @@ const EditAddress = () => {
           newAddress: values,
         });
         if (response.status === 200) {
+          setLoading(false)
           showToast('Address updated successfully!', 'light', 'success');
           navigate('/profile/address');
         }
       } catch (error) {
+        setLoading(false)
         console.error('Error during address update:', error);
         const errorMessage = error.response?.data?.message || 'An unexpected error occurred!';
         showToast(errorMessage, 'dark', 'error');
@@ -135,12 +140,9 @@ const EditAddress = () => {
 
           {/* Buttons */}
           <div className="flex justify-between">
-            <button
-              type="submit"
-              className="button bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Update
-            </button>
+          <button type="submit" className="button" disabled={loading}>
+  {loading ? <BtnLoader/> : 'Save'}
+</button>
 
             <button
               type="button"
