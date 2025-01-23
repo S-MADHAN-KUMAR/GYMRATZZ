@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { fetchCurrentUser } from "../../API/user/comman";
 
-const Navabr = () => {
+const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate()
     const [user, setUser] = useState(null);
@@ -115,4 +115,4 @@ const Navabr = () => {
   )
 }
 
-export default Navabr
+export default Navbar
