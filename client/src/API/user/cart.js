@@ -45,6 +45,11 @@ export const removeProductFromCart = async (productId, userId) => {
 
 export  const handleAddToCart = async (userId,productId,setAdded) => {
     try {
+
+      if(!userId){
+        showToast('Please Login','dark','error')
+        navigate('/login')
+      }
       const payload = {
         userId,
         productId: productId,

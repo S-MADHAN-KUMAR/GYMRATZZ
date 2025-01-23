@@ -57,7 +57,7 @@ const Cart = () => {
     <div className="container">
       <div className="mt-16">
         {cart ? (
-          <div className="flex w-[100vw] h-[100vh] justify-around">
+          <div className="flex w-[100vw] min-h-[100vh] justify-around">
             <div className="w-7/12">
               <div className="flex justify-between items-center mb-10">
                 <h1 className="h1 text-3xl tracking-wider drop-shadow-sm">Your carts</h1>

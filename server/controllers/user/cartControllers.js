@@ -158,6 +158,37 @@ export const update_cart_qty = async (req, res) => {
     }
 }
 
+// export const remove_cart_product = async (req, res) => {
+//   try {
+//     const { userId, productId } = req.body;
+
+//     const cart = await CartModel.findOne({ userId });
+
+//     if (!cart) {
+//       return res.status(404).json({ message: 'Cart not found' });
+//     }
+
+//     const newProducts = cart.products.filter((product) => product._id.toString() !== productId.toString());
+//     const foundProduct = cart.products.find((product) => product._id.toString() === productId.toString());
+
+//     if (!foundProduct) {
+//       return res.status(404).json({ message: 'Product not found in cart' });
+//     }
+
+//     cart.products = newProducts;
+//     cart.totalQty -= foundProduct.quantity;
+//     cart.totalAmt -= foundProduct.price * foundProduct.quantity;
+
+//     await cart.save();
+
+//     res.status(200).json({ message: 'Product removed from cart', cart });
+
+//   } catch (error) {
+//     console.error("Server Error:", error);
+//     return res.status(500).json({ message: "Internal server error", error: error.message });
+//   }
+// }
+
 export const remove_cart_product = async (req, res) => {
   try {
     const { userId, productId } = req.body;
@@ -168,24 +199,27 @@ export const remove_cart_product = async (req, res) => {
       return res.status(404).json({ message: 'Cart not found' });
     }
 
-    const newProducts = cart.products.filter((product) => product._id.toString() !== productId.toString());
+    // Find the product to remove
     const foundProduct = cart.products.find((product) => product._id.toString() === productId.toString());
 
     if (!foundProduct) {
       return res.status(404).json({ message: 'Product not found in cart' });
     }
 
-    cart.products = newProducts;
-    cart.totalQty -= foundProduct.quantity;
-    cart.totalAmt -= foundProduct.price * foundProduct.quantity;
+    // Filter out the removed product
+    cart.products = cart.products.filter((product) => product._id.toString() !== productId.toString());
 
+    // Recalculate total quantity and total amount based on remaining products
+    cart.totalQty = cart.products.reduce((total, product) => total + product.quantity, 0);
+    cart.totalAmt = cart.products.reduce((total, product) => total + (product.price * product.quantity), 0);
+
+    // Save the updated cart
     await cart.save();
 
     res.status(200).json({ message: 'Product removed from cart', cart });
-
   } catch (error) {
     console.error("Server Error:", error);
     return res.status(500).json({ message: "Internal server error", error: error.message });
   }
-}
+};
 
