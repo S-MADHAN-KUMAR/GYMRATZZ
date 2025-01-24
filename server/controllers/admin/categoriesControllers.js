@@ -126,6 +126,16 @@ export const toggleBlockCategories = async (req, res) => {
 
     if (!updatedCategory) {
       return res.status(404).json({ message: "Category not found." });
+
+      
+    }
+    if (status === false) {
+      const updatedProducts = await ProductModel.updateMany(
+        { category: id }, // Find products with this category ID
+        { status: false } // Set their status to false
+      );
+
+      console.log(`${updatedProducts.modifiedCount} products updated.`);
     }
 
     res.status(200).json({
