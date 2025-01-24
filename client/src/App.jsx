@@ -2,6 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import PageLoader from "./components/PageLoader"; // Import the PageLoader component
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; 
 
 // Lazy-load all your components
 const Home = lazy(() => import("./pages/user/Home"));
@@ -133,6 +135,7 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      <ToastContainer />
     </Router>
   );
 };

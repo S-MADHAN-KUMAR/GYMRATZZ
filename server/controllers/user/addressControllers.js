@@ -30,7 +30,7 @@ export const add_address = async (req, res) => {
     if (existAddress) {
       existAddress.addresses.push(addressData);
       await existAddress.save()
-      return res.status(200).json({ message: 'Address added successfully', address: existAddress });
+      return res.status(200).json({success:true, message: 'Address added successfully', address: existAddress });
     } else {
       
       const newAddress = new AddressModel({

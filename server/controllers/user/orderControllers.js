@@ -59,6 +59,9 @@ export const order_cancel = async (req, res) => {
 
     order.status = 'Cancelled';
 
+
+
+
     await Promise.all(
       order?.products.map(async (product) => {
         const existProduct = await ProductModel.findById(product?.productId);
@@ -70,6 +73,17 @@ export const order_cancel = async (req, res) => {
         }
       })
     );
+
+    // Handle wallet refund for wallet payment method
+    if (order.paymentMethod === 'Wallet') {
+      const walletUser = await WalletModel.findOne({ userId: order.userId });
+      if (!walletUser) {
+        return res.status(400).json({ message: 'Wallet not found for this user!' });
+      }
+
+      walletUser.balance += order.totalAmt; // Add refund amount to wallet balance
+      await walletUser.save();
+    }
 
     await order.save();
 
@@ -84,34 +98,51 @@ export const order_return = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Fetch order by ID
     const order = await OrderModel.findById(id);
 
     if (!order) {
       return res.status(400).json({ message: 'No orders found for this user!' });
     }
 
+    // Update order status to "Returned"
     order.status = 'Returned';
 
+    // Update stock for products in the order
     await Promise.all(
-      order?.products.map(async (product) => {
-        const existProduct = await ProductModel.findById(product?.productId);
+      order.products.map(async (product) => {
+        const existProduct = await ProductModel.findById(product.productId);
         if (existProduct) {
           existProduct.stock += product.quantity;
           await existProduct.save();
         } else {
-          console.log(`Product not found: ${product?.productId}`);
+          console.error(`Product not found: ${product.productId}`);
         }
       })
     );
 
+    // Handle wallet refund for wallet payment method
+    if (order.paymentMethod === 'Wallet') {
+      const walletUser = await WalletModel.findOne({ userId: order.userId });
+      if (!walletUser) {
+        return res.status(400).json({ message: 'Wallet not found for this user!' });
+      }
+
+      walletUser.balance += order.totalAmt; // Add refund amount to wallet balance
+      await walletUser.save();
+    }
+
+    // Save the updated order
     await order.save();
 
-    // Send only one response
-    res.status(200).json({ message: 'Order Returned successfully!' });
+    // Send success response
+    return res.status(200).json({ message: 'Order Returned successfully!' });
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    console.error('Error in order_return:', error.message);
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
-}
+};
+
 
 export const place_order = async (req, res) => {
   try {

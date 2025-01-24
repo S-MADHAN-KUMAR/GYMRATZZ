@@ -120,19 +120,8 @@ const OrderDetails = () => {
               <div className="flex flex-col w-full pop">
                 <p className="text-gray-900 font-semibold text-lg">{product?.name}</p>
                 <p className="font-medium text-gray-600">
-                  Price:{' '}
-                  {product.offerAmt ? (
-                    <>
-                      <span className="text-green-600 font-medium">
-                        ₹{(product.price - product.offerAmt).toFixed(2)}
-                      </span>
-                      <span className="text-gray-400 line-through ms-4 text-sm">
-                        ₹{product.price.toFixed(2)}
-                      </span>
-                    </>
-                  ) : (
+                  price :
                     <span className="text-green-600 font-medium">₹{product.price.toFixed(2)}</span>
-                  )}
                 </p>
                 <p className="font-medium text-gray-600">
                   Quantity: <span className="text-red-600 font-medium">{product?.quantity}</span>

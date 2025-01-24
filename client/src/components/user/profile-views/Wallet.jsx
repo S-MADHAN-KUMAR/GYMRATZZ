@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { useSelector } from 'react-redux';
 import { addToWallet, fetchWalletData } from '../../../API/user/walletAPI';
+import { showToast } from '../../../helpers/toast';
 
 const stripePromise = loadStripe(import.meta.env.VITE_LOAD_STRIPE);
 
@@ -13,7 +14,7 @@ const Wallet = () => {
 
   const handleAddAmount = async () => {
     if (!amount || amount <= 0) {
-      alert('Enter a valid amount.');
+      showToast('Enter a valid amount.','dark','error');
       return;
     }
 

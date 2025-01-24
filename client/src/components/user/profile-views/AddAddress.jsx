@@ -28,6 +28,8 @@ const AddAddress = () => {
       setLoading(true)
       try {
         const response = await addAddress(values)
+        console.log(response);
+        
         if (response.status === 200) {
           setLoading(false)
           showToast('Address added successfully!', 'light', 'success');

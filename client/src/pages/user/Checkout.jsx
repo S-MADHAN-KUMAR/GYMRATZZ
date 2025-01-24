@@ -149,7 +149,7 @@ const Checkout = () => {
                 <label
                 key={coupon._id}
                 htmlFor={`coupon-${coupon._id}`}
-                className={`relative flex items-center justify-between w-full max-w-md mx-auto border-2 overflow-hidden border-dashed rounded-lg shadow-lg cursor-pointer ${
+                className={`relative flex items-center justify-between w-full max-w-md mx-auto border-2  border-dashed rounded-lg shadow-lg cursor-pointer ${
                   new Date(coupon.endDate) < new Date()
                     ? "border-gray-300 bg-gray-100 cursor-not-allowed"
                     : selectedCoupon === coupon._id
@@ -160,7 +160,7 @@ const Checkout = () => {
               
 
                  <div className={selectedCoupon === coupon._id
-                    ? "w-1/3 flex flex-col justify-center p-5 border-r-2 border-r-blue-400 border-dashed h-full" : "w-1/3 flex flex-col justify-center p-5 border-r-2 border-r-red-400 border-dashed h-full"}>
+                    ? "relative w-1/3 flex flex-col justify-center p-5 border-r-2 border-r-blue-400 border-dashed h-full" : "w-1/3 flex flex-col justify-center p-5 border-r-2 border-r-red-400 border-dashed h-full"}>
                  <h2 className='h1 text-5xl font-medium text-red-500'>{coupon.discount} % </h2>
                  <h2 className='h1 text-5xl font-medium'>Off</h2>
                  </div>
@@ -178,6 +178,15 @@ const Checkout = () => {
     hour: "2-digit",
     minute: "2-digit",
   })}</span>
+{selectedCoupon === coupon._id && (
+  <div
+    onClick={() => setSelectedCoupon(null)} 
+    className="absolute -top-4 -right-4 bg-red-700 px-2 py-1 rounded-full pop text-white cursor-pointer"
+  >
+    Remove
+  </div>
+)}
+
               </div>
              
                  </div>
