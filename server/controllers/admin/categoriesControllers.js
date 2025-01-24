@@ -136,6 +136,13 @@ export const toggleBlockCategories = async (req, res) => {
       );
 
       console.log(`${updatedProducts.modifiedCount} products updated.`);
+    }else if (status === true) {
+      const updatedProducts = await ProductModel.updateMany(
+        { category: id }, // Find products with this category ID
+        { status: true } // Set their status to false
+      );
+
+      console.log(`${updatedProducts.modifiedCount} products updated.`);
     }
 
     res.status(200).json({
