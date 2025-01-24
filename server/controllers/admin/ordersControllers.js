@@ -1,5 +1,6 @@
 import OrderModel from '../../models/orderModel.js'
 import moment from 'moment';
+import WalletModel from '../../models/walletModel.js';
 
 export const get_all_orders = async(req,res)=>{
     try {
@@ -35,6 +36,20 @@ export const update_order_status = async (req, res) => {
       }
   
       order.status = status;
+
+
+      if (order.paymentMethod === 'Wallet' || order.paymentMethod === 'Returned') {
+        const walletUser = await WalletModel.findOne({ userId: order.userId });
+        if (!walletUser) {
+          return res.status(400).json({ message: 'Wallet not found for this user!' });
+        }
+  
+        walletUser.balance += order.totalAmt;
+        await walletUser.save();
+      }
+  
+
+
       await order.save();
   
       return res.status(200).json({

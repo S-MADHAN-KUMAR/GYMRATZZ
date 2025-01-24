@@ -39,7 +39,7 @@ export const add_address = async (req, res) => {
       });
 
       await newAddress.save()
-      return res.status(201).json({ message: 'Address added successfully', address: newAddress });
+      return res.status(200).json({ message: 'Address added successfully', address: newAddress });
     }
   } catch (error) {
     console.error(error);
