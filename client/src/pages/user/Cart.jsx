@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { fetchUserCart, updateCartQuantity, removeProductFromCart } from '../../API/user/cart.js'; // Import the functions
 import { showToast } from '../../helpers/toast';
 import { useSelector } from 'react-redux';
+import BtnLoader from '../../components/BtnLoader.jsx';
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
   const loadCart = async () => {
@@ -24,19 +26,23 @@ const Cart = () => {
 
   const totalAmt = cart?.totalAmt || 0;
 
-  const handleUpdateQty = async (productId, type) => {
+  const handleUpdateQty = async (productId, type ) => {
+    setLoading(true)
     if (!cart) return;
     const cartId = cart._id;
 
     try {
+
       const res = await updateCartQuantity(cartId, productId, type);  // Call the API function
       if (res.status === 200) {
+        setLoading(false)
         loadCart();
         if (res?.data?.msg) {
           showToast(res?.data?.message, 'dark', 'error');
         }
       }
     } catch (error) {
+      setLoading(false)
       console.log(error.message || 'An error occurred.');
     }
   };
@@ -103,7 +109,7 @@ const Cart = () => {
                           alt="Decrement"
                         />
                       </button>
-                      <p className="px-4 h2 text-white">{item?.quantity}</p>
+                      <p className="px-4 h2 text-white">{loading ? <BtnLoader /> : item?.quantity}</p>
                       <button onClick={() => handleUpdateQty(item?.productId, "increment")} className="hover:scale-105">
                         <img
                           src="https://img.icons8.com/?size=100&id=UUgYZvYwoZrF&format=png&color=000000"
