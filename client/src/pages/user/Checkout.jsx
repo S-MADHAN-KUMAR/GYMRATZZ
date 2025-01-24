@@ -84,8 +84,8 @@ const Checkout = () => {
               {selectedAddress.name}
             </p>
             <p>
-              <span className="font-medium text-gray-900">Phone:</span>{" "}
-              {selectedAddress.phone}
+              <span className="font-medium text-gray-900">mobile:</span>{" "}
+              {selectedAddress.mobile}
             </p>
             <p>
               <span className="font-medium text-gray-900">Address 1:</span>{" "}

@@ -3,10 +3,10 @@ import * as yup from 'yup';
 export const RegisterValidation = yup.object({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email address').required('Email is required'),
-  phone: yup
+  mobile: yup
     .string()
-    .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
-    .required('Phone number is required'),
+    .matches(/^[0-9]{10}$/, 'mobile number must be 10 digits')
+    .required('mobile number is required'),
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -27,10 +27,10 @@ export const loginValidationSchema = yup.object().shape({
 
 export const profileValidation = yup.object({
   name: yup.string().required('Name is required'),
-  phone: yup
+  mobile: yup
     .string()
-    .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
-    .required('Phone number is required'),
+    .matches(/^[0-9]{10}$/, 'mobile number must be 10 digits')
+    .required('mobile number is required'),
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
@@ -43,10 +43,10 @@ export const addressValidation = yup.object({
     .required('Name is required')
     .matches(/^[a-zA-Z\s]+$/, 'Name must contain only letters and spaces'),
 
-  phone: yup.string()
+    mobile: yup.string()
     .trim()
-    .required('Phone number is required')
-    .matches(/^\d{10}$/, 'Phone number must be 10 digits'),
+    .required('mobile number is required')
+    .matches(/^\d{10}$/, 'mobile number must be 10 digits'),
 
   addressline1: yup.string()
     .trim()

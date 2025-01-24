@@ -32,7 +32,7 @@ const { currentUser } = useSelector((state) => state.user);
                 <span className="font-medium text-gray-900">Name:</span> {add?.name}
               </p>
               <p>
-                <span className="font-medium text-gray-900">Phone:</span> {add?.phone}
+                <span className="font-medium text-gray-900">mobile:</span> {add?.mobile}
               </p>
               <p>
                 <span className="font-medium text-gray-900">Address 1:</span> {add?.addressline1}

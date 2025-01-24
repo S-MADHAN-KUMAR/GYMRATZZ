@@ -17,7 +17,7 @@ const Register = () => {
     initialValues: {
       name: '',
       email: '',
-      phone: '',
+      mobile: '',
       password: '',
       confirmPassword: '',
     },
@@ -48,7 +48,7 @@ const Register = () => {
       >
         <h1>Register Form</h1>
         <div className='flex flex-col md:flex-row gap-4 justify-between'>
-          {['name', 'phone'].map((field) => (
+          {['name', 'mobile'].map((field) => (
             <div className="input-group" key={field}>
               <label htmlFor={field}>{field}:</label>
               <input

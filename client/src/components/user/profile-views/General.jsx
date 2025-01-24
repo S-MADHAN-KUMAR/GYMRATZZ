@@ -30,7 +30,7 @@ const General = () => {
     initialValues: {
       id: user?._id || currentUser?._id || "",
       name: user?.name || "",
-      phone: user?.phone || "",
+      mobile: user?.mobile || "",
       email: user?.email || "",
       password: user?.password || "", // Empty if password doesn't exist
     },
@@ -60,7 +60,7 @@ const General = () => {
           <div className="form-theme flex flex-col h-[90vh] w-1/2">
             <h1>Update Your Profile</h1>
             <form onSubmit={formik.handleSubmit}>
-              {["name", "email", "phone", "password"].map((field) => (
+              {["name", "email", "mobile", "password"].map((field) => (
                 <div className="input-group my-2" key={field}>
                   <label htmlFor={field}>{field}:</label>
                   <input
@@ -69,7 +69,7 @@ const General = () => {
                         ? "password"
                         : field === "email"
                         ? "email"
-                        : field === "phone"
+                        : field === "mobile"
                         ? "tel"
                         : "text"
                     }
@@ -136,7 +136,7 @@ const General = () => {
                   <p className="pop text-3xl font-semibold">{user?.name}</p>
                   <div className="flex items-center font-medium gap-x-4">
                     <FaPhone />
-                    <p>{user?.phone ? `91+ ${user.phone}` : "No Phone Number"}</p>
+                    <p>{user?.mobile ? `91+ ${user.mobile}` : "No mobile Number"}</p>
                   </div>
                   <div className="flex items-center font-medium gap-x-4">
                     <MdEmail />

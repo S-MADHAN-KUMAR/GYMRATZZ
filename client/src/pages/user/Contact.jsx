@@ -108,7 +108,7 @@ const Contact = () => {
               Gym City, FitLand 54321
             </p>
             <p className="mb-12">
-              <span className="font-medium">Phone:</span> +1 (800) 123-4567
+              <span className="font-medium">mobile:</span> +1 (800) 123-4567
             </p>
             <p className="mb-12">
               <span className="font-medium">Email:</span>{" "}

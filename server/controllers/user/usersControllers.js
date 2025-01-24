@@ -6,11 +6,11 @@ import { userGenerateToken } from '../../utils/generateToken.js';
 // Register User
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, phone, password, status } = req.body;
+    const { name, email, mobile, password, status } = req.body;
 
-    const userExist = await UserModel.findOne({ $or: [{ email }, { phone }] });
+    const userExist = await UserModel.findOne({ $or: [{ email }, { mobile }] });
     if (userExist) {
-      return res.status(400).json({ message: 'User already exists with this email or phone!' });
+      return res.status(400).json({ message: 'User already exists with this email or mobile!' });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
     const user = new UserModel({
       name,
       email,
-      phone,
+      mobile,
       password: hashedPassword,
       status,
     });
@@ -60,7 +60,7 @@ export const registerUser = async (req, res) => {
   } catch (err) {
     if (err.code === 11000) {
       return res.status(400).json({
-        message: 'Duplicate email or phone detected!',
+        message: 'Duplicate email or mobile detected!',
         error: err.message,
       });
     }

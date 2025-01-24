@@ -31,7 +31,7 @@ const EditAddress = () => {
     enableReinitialize: true,
     initialValues: {
       name: address?.name || '',
-      phone: address?.phone || '',
+      mobile: address?.mobile || '',
       addressline1: address?.addressline1 || '',
       addressline2: address?.addressline2 || '',
       city: address?.city || '',
@@ -66,15 +66,15 @@ const EditAddress = () => {
       <div className="form-theme flex flex-col h-[90vh]">
         <h1>Edit your Address</h1>
         <form onSubmit={formik.handleSubmit}>
-          {/* Name and Phone Fields */}
+          {/* Name and mobile Fields */}
           <div className="flex justify-between gap-5">
-            {['name', 'phone'].map((field) => (
+            {['name', 'mobile'].map((field) => (
               <div className="input-group my-2 w-1/2" key={field}>
                 <label htmlFor={field} className="block font-medium mb-1">
                   {field.charAt(0).toUpperCase() + field.slice(1)}:
                 </label>
                 <input
-                  type={field === 'phone' ? 'number' : 'text'}
+                  type={field === 'mobile' ? 'number' : 'text'}
                   name={field}
                   value={formik.values[field]}
                   onChange={formik.handleChange}

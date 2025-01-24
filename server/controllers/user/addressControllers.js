@@ -3,15 +3,15 @@ import UserModel from '../../models/userModel.js';
 
 export const add_address = async (req, res) => {
   try {
-    const { id, name, phone, addressline1, addressline2, city, state, pincode } = req.body;
+    const { id, name, mobile, addressline1, addressline2, city, state, pincode } = req.body;
 
-    if (!id || !name || !phone || !addressline1 || !city || !state || !pincode) {
+    if (!id || !name || !mobile || !addressline1 || !city || !state || !pincode) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
     const addressData = {
       name,
-      phone,
+      mobile,
       addressline1,
       addressline2,
       city,

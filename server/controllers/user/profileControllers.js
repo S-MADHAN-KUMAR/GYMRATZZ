@@ -3,9 +3,9 @@ import UserModel from '../../models/userModel.js';
 
 export const update_profile = async (req, res) => {
   try {
-    const { id, name, phone, password } = req.body;
+    const { id, name, mobile, password } = req.body;
 
-    if (!id || !name || !phone || !password) {
+    if (!id || !name || !mobile || !password) {
       return res.status(400).json({ message: "All fields are required!" });
     }
 
@@ -17,7 +17,7 @@ export const update_profile = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10); 
     const updatedUser = {
       name,
-      phone,
+      mobile,
       password: hashedPassword, 
     };
 

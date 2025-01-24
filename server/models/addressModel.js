@@ -6,7 +6,7 @@ const AddressSchema = new mongoose.Schema(
     addresses: [
       {
         name: { type: String },
-        phone: { type: Number },
+        mobile: { type: Number },
         addressline1: { type: String, require: true },
         addressline2: { type: String, require: true },
         city: { type: String, require: true },
