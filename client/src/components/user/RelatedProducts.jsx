@@ -7,7 +7,7 @@ const RelatedProducts = ({id}) => {
 
     useEffect(()=>{
         fetchRelatedProducts(id,setproducts)
-    },[id])
+    },[id]) 
 
 
   return (
