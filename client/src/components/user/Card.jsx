@@ -61,14 +61,14 @@ const Card = ({ product }) => {
   return (
     <div className="bg-white flex flex-col items-center h-[270px] max-w-[200px] min-w-[200px] hover:scale-105 duration-500 shadow hover:border relative">
       <div className="h-[50%] p-2 w-full overflow-hidden">
-  
+  <Link to={`/shop/${product?._id}`}>
          <img
             className="w-full h-full object-contain p-4 hover:scale-105 duration-500"
             src={product?.imageUrls[0]}
             alt={product?.name}
-           onClick(()=>navigate(`/shop/${product?._id}`))
+          
           />
-    
+    </Link>
       </div>
       <div className="flex flex-col w-full h-[50%] justify-between p-2">
         <p className="pop font-medium">
