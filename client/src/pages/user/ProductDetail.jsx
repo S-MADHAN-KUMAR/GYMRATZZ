@@ -53,14 +53,13 @@ const ProductDetail = () => {
         }
       };
  
-   useEffect(() => {
-  const loadProductDetail = async () => {
-    await fetchProductDetail(setProduct, setMainImage, setImages, id);
-  };
-  loadProductDetail();
-  window.scrollTo(0, 0); // Scroll to top on product change
-}, [id]);
-
+         useEffect(()=>{
+      const loadProductDetail = async()=>{
+        await fetchProductDetail(setProduct, setMainImage, setImages, id)
+      }
+     loadProductDetail()
+     window.scrollTo(0, 0);
+    },[id])
 
     const findMaxStock = (productId) => {
       const cartProduct = cart?.products.find(
