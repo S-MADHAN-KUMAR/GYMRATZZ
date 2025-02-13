@@ -58,7 +58,7 @@ const ProductDetail = () => {
        await fetchProductDetail(setProduct, setMainImage, setImages, id)
      }
      loadProductDetail()
-    },[])
+    },[id])
 
     const findMaxStock = (productId) => {
       const cartProduct = cart?.products.find(
