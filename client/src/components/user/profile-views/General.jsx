@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { profileValidation } from "../../../validations/userValidations";
+import { profileValidation } from "../../../validations/userValidations"; 
 import { FaPhone } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { showToast } from "../../../helpers/toast";
