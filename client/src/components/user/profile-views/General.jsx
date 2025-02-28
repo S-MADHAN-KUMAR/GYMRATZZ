@@ -11,7 +11,7 @@ import BtnLoader from "../../BtnLoader";
 const General = () => {
   const [user, setUser] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(false); 
   const [loading, setLoading] = useState(false);
 
   // Fetch user data
