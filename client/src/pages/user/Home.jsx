@@ -69,7 +69,7 @@ const Home = () => {
       <div className="w-full px-2 md:px-12  my-9 md:my-12 ">
         <h1 className="header mb-3  md:mb-5">Top Brands</h1>
 
-        <div className="marquee justify-evenly h-[18vh] md:h-[30vh] flex items-center z-10 ">
+        <div className="marquee justify-evenly h-[18vh] md:h-[30vh] flex items-center z-10 bg-black">
           <div>
             <span className="flex justify-evenly items-center h-full gap-x-4">
               {brands.length > 0 ? (
