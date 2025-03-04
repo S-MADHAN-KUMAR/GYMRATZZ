@@ -52,7 +52,7 @@ const Home = () => {
             {banners.map((banner, index) => (
               <div
                 key={`${banner._id}-${index}`}
-                className="min-w-full h-full"
+                className="min-w-full h-[80vh]"
               >
                 <img
                   src={banner?.imageUrl}
