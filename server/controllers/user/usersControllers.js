@@ -220,7 +220,6 @@ export const handle_google_auth = async (req, res) => {
       }
 
       // Update user details if already exists
-      user.mobile = mobile || user.mobile;
       user.name = name || user.name;
       user.profilePicture = picture || user.profilePicture;
       await user.save();
